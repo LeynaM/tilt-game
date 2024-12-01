@@ -1,17 +1,23 @@
 import * as THREE from "three";
 
 const container = document.getElementById("container");
-
-const scene = new THREE.Scene();
+const renderer = new THREE.WebGLRenderer();
 const camera = new THREE.PerspectiveCamera(
   75,
-  window.innerWidth / window.innerHeight,
+  container.clientWidth / container.clientHeight,
   0.1,
   1000,
 );
 
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
+const resizeObserver = new ResizeObserver((entries) => {
+  console.log(container.clientWidth, container.clientHeight);
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  camera.aspect = container.clientWidth / container.clientHeight;
+  renderer.render(scene, camera);
+});
+resizeObserver.observe(container);
+
+const scene = new THREE.Scene();
 
 const geometry = new THREE.BoxGeometry(4, 4, 0.5);
 const material = new THREE.MeshStandardMaterial({ color: 0x0ffff0 });
@@ -37,7 +43,9 @@ renderer.render(scene, camera);
 
 container.appendChild(renderer.domElement);
 container.addEventListener("mousemove", (event) => {
-  cube.rotation.y = event.clientX / window.innerWidth - window.innerWidth;
-  cube.rotation.x = event.clientY / window.innerHeight + window.innerHeight;
+  cube.rotation.y =
+    ((event.clientX / container.clientWidth) * Math.PI) / 2 - Math.PI / 4;
+  cube.rotation.x =
+    ((event.clientY / container.clientHeight) * Math.PI) / 2 - Math.PI / 4;
   renderer.render(scene, camera);
 });
