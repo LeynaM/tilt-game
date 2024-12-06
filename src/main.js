@@ -4,7 +4,7 @@ function main() {
   const container = document.getElementById("container");
   const world = new World(container);
 
-  world.render();
+  world.start();
 }
 
 main();

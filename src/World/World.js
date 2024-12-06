@@ -6,16 +6,18 @@ import { createRenderer } from "./systems/renderer.js";
 import { Resizer } from "./systems/Resizer.js";
 import { TiltControls } from "./systems/TiltControls.js";
 import { createLights } from "./components/lights.js";
-import { Loop } from "./loop.js";
+import { Loop } from "./systems/Loop.js";
 
 let camera;
 let renderer;
 let scene;
+let loop;
 
 class World {
   constructor(container) {
     camera = createCamera();
     scene = createScene();
+    loop = new Loop(camera, scene, renderer);
     renderer = createRenderer();
     container.append(renderer.domElement);
 
@@ -38,6 +40,14 @@ class World {
   }
   render() {
     renderer.render(scene, camera);
+  }
+
+  start() {
+    loop.start();
+  }
+
+  stop() {
+    loop.stop();
   }
 }
 
