@@ -17,26 +17,28 @@ class World {
   constructor(container) {
     camera = createCamera();
     scene = createScene();
-    loop = new Loop(camera, scene, renderer);
     renderer = createRenderer();
+    loop = new Loop(camera, scene, renderer);
     container.append(renderer.domElement);
 
     const cube = createCube();
     const ball = createBall();
     const light = createLights();
 
+    loop.updatables.push(cube);
+
     scene.add(cube, ball, light);
 
     const resizer = new Resizer(container, camera, renderer);
-    resizer.onResize = () => {
-      this.render();
-    };
+    // resizer.onResize = () => {
+    //   this.render();
+    // };
 
     const tiltControl = new TiltControls(container, cube);
-    tiltControl.onTilt = () => {
-      console.log("hi");
-      this.render();
-    };
+    // tiltControl.onTilt = () => {
+    //   console.log("hi");
+    //   this.render();
+    // };
   }
   render() {
     renderer.render(scene, camera);

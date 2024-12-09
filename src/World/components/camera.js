@@ -8,8 +8,8 @@ function createCamera() {
     1000,
   );
 
-  camera.rotation.x += 0.3;
-  camera.position.set(0, -2, 6);
+  camera.rotation.x += Math.PI / 2;
+  camera.position.set(0, -6, 0);
 
   return camera;
 }

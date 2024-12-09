@@ -6,7 +6,7 @@ function createBall() {
   const material = new MeshStandardMaterial({ color: 0xffff00 });
 
   const ball = new Mesh(geometry, material);
-  ball.position.set(0, 0, 0.5);
+  ball.position.set(0, -0.5, 0);
 
   return ball;
 }
