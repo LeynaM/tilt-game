@@ -26,6 +26,7 @@ class World {
     const light = createLights();
 
     loop.updatables.push(cube);
+    loop.setRigidBody(ball);
 
     scene.add(cube, ball, light);
 
