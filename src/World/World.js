@@ -7,6 +7,7 @@ import { Resizer } from "./systems/Resizer.js";
 import { TiltControls } from "./systems/TiltControls.js";
 import { createLights } from "./components/lights.js";
 import { Loop } from "./systems/Loop.js";
+import { Vector2 } from "three";
 
 let camera;
 let renderer;
@@ -18,28 +19,30 @@ class World {
     camera = createCamera();
     scene = createScene();
     renderer = createRenderer();
-    loop = new Loop(camera, scene, renderer);
     container.append(renderer.domElement);
 
     const cube = createCube();
     const ball = createBall();
     const light = createLights();
+    const plane = {
+      width: 6,
+      height: 6,
+    };
+    const circle = {
+      radius: 0.2,
+      centre: new Vector2(2, 2),
+    };
+    const tiltAngles = { x: 0, z: 0 };
 
-    loop.updatables.push(cube);
+    loop = new Loop(camera, scene, renderer, cube, tiltAngles, circle, ball);
+
     loop.setRigidBody(ball);
 
     scene.add(cube, ball, light);
 
     const resizer = new Resizer(container, camera, renderer);
-    // resizer.onResize = () => {
-    //   this.render();
-    // };
 
-    const tiltControl = new TiltControls(container, cube);
-    // tiltControl.onTilt = () => {
-    //   console.log("hi");
-    //   this.render();
-    // };
+    const tiltControl = new TiltControls(container, tiltAngles);
   }
   render() {
     renderer.render(scene, camera);

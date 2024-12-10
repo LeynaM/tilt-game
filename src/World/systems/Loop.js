@@ -5,11 +5,14 @@ const PHYSICS_DELTA = 0.05;
 const GRAVITY = new Vector3(0, 1, 0);
 
 class Loop {
-  constructor(camera, scene, renderer) {
+  constructor(camera, scene, renderer, cube, tiltAngles, circle, ball) {
     this.camera = camera;
     this.scene = scene;
     this.renderer = renderer;
-    this.updatables = [];
+    this.cube = cube;
+    this.tiltAngles = tiltAngles;
+    this.ball = ball;
+    this.circle = circle;
   }
 
   setRigidBody(rigidBody) {
@@ -25,30 +28,41 @@ class Loop {
       this.renderer.render(this.scene, this.camera);
     });
 
-    this.physicsLoop = setInterval(() => {
-      this.physicsTick();
-    }, PHYSICS_DELTA * 1000);
+    // this.physicsLoop = setInterval(() => {
+    //   this.physicsTick();
+    // }, PHYSICS_DELTA * 1000);
   }
 
   stop() {
     this.renderer.setAnimationLoop(null);
-    clearInterval(this.physicsLoop);
+    // clearInterval(this.physicsLoop);
   }
 
   animationTick() {
-    const delta = clock.getDelta();
+    this.cube.rotation.x = this.tiltAngles.x;
+    this.cube.rotation.z = this.tiltAngles.z;
 
-    for (const object of this.updatables) {
-      object.tick(delta);
-    }
+    this.ball.position.x = this.circle.centre.x * Math.cos(this.tiltAngles.z);
+    this.ball.position.y =
+      this.circle.centre.x *
+        Math.sin(this.tiltAngles.z) *
+        Math.cos(this.tiltAngles.x) -
+      this.circle.centre.y * Math.sin(this.tiltAngles.x);
+    this.ball.position.z =
+      this.circle.centre.x *
+        Math.sin(this.tiltAngles.x) *
+        Math.sin(this.tiltAngles.z) +
+      this.circle.centre.y * Math.cos(this.tiltAngles.x);
+
+    console.log(this.ball.position);
   }
 
-  physicsTick() {
-    this.rigidBody.velocity.add(GRAVITY.clone().multiplyScalar(PHYSICS_DELTA));
-    this.rigidBody.position.add(
-      this.rigidBody.velocity.clone().multiplyScalar(PHYSICS_DELTA),
-    );
-  }
+  //   physicsTick() {
+  //     this.rigidBody.velocity.add(GRAVITY.clone().multiplyScalar(PHYSICS_DELTA));
+  //     this.rigidBody.position.add(
+  //       this.rigidBody.velocity.clone().multiplyScalar(PHYSICS_DELTA),
+  //     );
+  //   }
 }
 
 export { Loop };
