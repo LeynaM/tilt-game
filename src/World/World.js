@@ -6,13 +6,15 @@ import { createRenderer } from "./systems/renderer.js";
 import { Resizer } from "./systems/Resizer.js";
 import { TiltControls } from "./systems/TiltControls.js";
 import { createLights } from "./components/lights.js";
-import { Loop } from "./systems/Loop.js";
+import { AnimationLoop } from "./systems/AnimationLoop.js";
+import { PhysicsLoop } from "./systems/PhysicsLoop.js";
 import { Vector2 } from "three";
 
 let camera;
 let renderer;
 let scene;
-let loop;
+let animationLoop;
+let physicsLoop;
 
 class World {
   constructor(container) {
@@ -36,8 +38,24 @@ class World {
     };
     const tiltAngles = { x: 0, z: 0 };
 
-    loop = new Loop(camera, scene, renderer, cube, tiltAngles, circle, ball);
-
+    animationLoop = new AnimationLoop(
+      camera,
+      scene,
+      renderer,
+      cube,
+      tiltAngles,
+      circle,
+      ball,
+    );
+    physicsLoop = new PhysicsLoop(
+      camera,
+      scene,
+      renderer,
+      cube,
+      tiltAngles,
+      circle,
+      ball,
+    );
     scene.add(cube, ball, light);
 
     const resizer = new Resizer(container, camera, renderer);
@@ -49,11 +67,13 @@ class World {
   }
 
   start() {
-    loop.start();
+    animationLoop.start();
+    physicsLoop.start();
   }
 
   stop() {
-    loop.stop();
+    animationLoop.stop();
+    physicsLoop.stop();
   }
 }
 

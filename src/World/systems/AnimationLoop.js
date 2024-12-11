@@ -4,7 +4,7 @@ const clock = new Clock();
 const PHYSICS_DELTA = 0.05;
 const GRAVITY = 2;
 
-class Loop {
+class AnimationLoop {
   constructor(camera, scene, renderer, cube, tiltAngles, circle, ball) {
     this.camera = camera;
     this.scene = scene;
@@ -21,10 +21,6 @@ class Loop {
       this.animationTick();
       this.renderer.render(this.scene, this.camera);
     });
-
-    this.physicsLoop = setInterval(() => {
-      this.physicsTick();
-    }, PHYSICS_DELTA * 1000);
   }
 
   stop() {
@@ -50,21 +46,6 @@ class Loop {
 
     console.log(this.ball.position);
   }
-
-  physicsTick() {
-    this.circle.acceleration.x = GRAVITY * Math.sin(this.tiltAngles.z);
-    this.circle.velocity.x =
-      this.circle.velocity.x + this.circle.acceleration.x * PHYSICS_DELTA;
-    this.circle.centre.x =
-      this.circle.centre.x + this.circle.velocity.x * PHYSICS_DELTA;
-
-    this.circle.acceleration.y = -GRAVITY * Math.sin(this.tiltAngles.x);
-    this.circle.velocity.y =
-      this.circle.velocity.y + this.circle.acceleration.y * PHYSICS_DELTA;
-    this.circle.centre.y =
-      this.circle.centre.y + this.circle.velocity.y * PHYSICS_DELTA;
-    console.log(this.circle.centre);
-  }
 }
 
-export { Loop };
+export { AnimationLoop };
