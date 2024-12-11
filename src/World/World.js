@@ -47,15 +47,7 @@ class World {
       circle,
       ball,
     );
-    physicsLoop = new PhysicsLoop(
-      camera,
-      scene,
-      renderer,
-      cube,
-      tiltAngles,
-      circle,
-      ball,
-    );
+    physicsLoop = new PhysicsLoop(tiltAngles, circle);
     scene.add(cube, ball, light);
 
     const resizer = new Resizer(container, camera, renderer);

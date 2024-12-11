@@ -5,13 +5,8 @@ const PHYSICS_DELTA = 0.05;
 const GRAVITY = 2;
 
 class PhysicsLoop {
-  constructor(camera, scene, renderer, cube, tiltAngles, circle, ball) {
-    this.camera = camera;
-    this.scene = scene;
-    this.renderer = renderer;
-    this.cube = cube;
+  constructor(tiltAngles, circle) {
     this.tiltAngles = tiltAngles;
-    this.ball = ball;
     this.circle = circle;
   }
 
