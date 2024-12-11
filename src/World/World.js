@@ -30,13 +30,13 @@ class World {
     };
     const circle = {
       radius: 0.2,
-      centre: new Vector2(2, 2),
+      centre: new Vector2(0, 0),
+      velocity: new Vector2(0, 0),
+      acceleration: new Vector2(0, 0),
     };
     const tiltAngles = { x: 0, z: 0 };
 
     loop = new Loop(camera, scene, renderer, cube, tiltAngles, circle, ball);
-
-    loop.setRigidBody(ball);
 
     scene.add(cube, ball, light);
 

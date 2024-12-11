@@ -2,7 +2,7 @@ import { Clock, Vector3 } from "three";
 
 const clock = new Clock();
 const PHYSICS_DELTA = 0.05;
-const GRAVITY = new Vector3(0, 1, 0);
+const GRAVITY = 2;
 
 class Loop {
   constructor(camera, scene, renderer, cube, tiltAngles, circle, ball) {
@@ -15,12 +15,6 @@ class Loop {
     this.circle = circle;
   }
 
-  setRigidBody(rigidBody) {
-    this.rigidBody = rigidBody;
-    this.rigidBody.velocity = new Vector3();
-    this.rigidBody.acceleration = new Vector3();
-  }
-
   start() {
     this.renderer.setAnimationLoop(() => {
       // render a frame
@@ -28,9 +22,9 @@ class Loop {
       this.renderer.render(this.scene, this.camera);
     });
 
-    // this.physicsLoop = setInterval(() => {
-    //   this.physicsTick();
-    // }, PHYSICS_DELTA * 1000);
+    this.physicsLoop = setInterval(() => {
+      this.physicsTick();
+    }, PHYSICS_DELTA * 1000);
   }
 
   stop() {
@@ -57,12 +51,20 @@ class Loop {
     console.log(this.ball.position);
   }
 
-  //   physicsTick() {
-  //     this.rigidBody.velocity.add(GRAVITY.clone().multiplyScalar(PHYSICS_DELTA));
-  //     this.rigidBody.position.add(
-  //       this.rigidBody.velocity.clone().multiplyScalar(PHYSICS_DELTA),
-  //     );
-  //   }
+  physicsTick() {
+    this.circle.acceleration.x = GRAVITY * Math.sin(this.tiltAngles.z);
+    this.circle.velocity.x =
+      this.circle.velocity.x + this.circle.acceleration.x * PHYSICS_DELTA;
+    this.circle.centre.x =
+      this.circle.centre.x + this.circle.velocity.x * PHYSICS_DELTA;
+
+    this.circle.acceleration.y = -GRAVITY * Math.sin(this.tiltAngles.x);
+    this.circle.velocity.y =
+      this.circle.velocity.y + this.circle.acceleration.y * PHYSICS_DELTA;
+    this.circle.centre.y =
+      this.circle.centre.y + this.circle.velocity.y * PHYSICS_DELTA;
+    console.log(this.circle.centre);
+  }
 }
 
 export { Loop };
