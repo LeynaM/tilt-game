@@ -8,7 +8,7 @@ import { TiltControls } from "./systems/TiltControls.js";
 import { createLights } from "./components/lights.js";
 import { AnimationLoop } from "./systems/AnimationLoop.js";
 import { PhysicsLoop } from "./systems/PhysicsLoop.js";
-import { Vector2 } from "three";
+import { Vector2, Vector3 } from "three";
 
 let camera;
 let renderer;
@@ -35,20 +35,22 @@ class World {
       centre: new Vector2(0, 0),
       velocity: new Vector2(0, 0),
       acceleration: new Vector2(0, 0),
+      isOnPlane: true,
     };
+    let sphere = null;
+
     const tiltAngles = { x: 0, z: 0 };
 
+    physicsLoop = new PhysicsLoop(tiltAngles, circle, sphere);
+    scene.add(cube, ball, light);
     animationLoop = new AnimationLoop(
       camera,
       scene,
       renderer,
       cube,
-      tiltAngles,
-      circle,
       ball,
+      physicsLoop,
     );
-    physicsLoop = new PhysicsLoop(tiltAngles, circle);
-    scene.add(cube, ball, light);
 
     const resizer = new Resizer(container, camera, renderer);
 

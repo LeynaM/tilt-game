@@ -1,18 +1,18 @@
 import { Clock, Vector3 } from "three";
+import { positionOnPlaneTo3D } from "../utils/utils";
 
 const clock = new Clock();
 const PHYSICS_DELTA = 0.05;
-const GRAVITY = 2;
+const GRAVITY = 20;
 
 class AnimationLoop {
-  constructor(camera, scene, renderer, cube, tiltAngles, circle, ball) {
+  constructor(camera, scene, renderer, cube, ball, physics) {
     this.camera = camera;
     this.scene = scene;
     this.renderer = renderer;
+    this.physics = physics;
     this.cube = cube;
-    this.tiltAngles = tiltAngles;
     this.ball = ball;
-    this.circle = circle;
   }
 
   start() {
@@ -29,22 +29,24 @@ class AnimationLoop {
   }
 
   animationTick() {
-    this.cube.rotation.x = this.tiltAngles.x;
-    this.cube.rotation.z = this.tiltAngles.z;
+    this.cube.rotation.x = this.physics.tiltAngles.x;
+    this.cube.rotation.z = this.physics.tiltAngles.z;
 
-    this.ball.position.x = this.circle.centre.x * Math.cos(this.tiltAngles.z);
-    this.ball.position.y =
-      this.circle.centre.x *
-        Math.sin(this.tiltAngles.z) *
-        Math.cos(this.tiltAngles.x) -
-      this.circle.centre.y * Math.sin(this.tiltAngles.x);
-    this.ball.position.z =
-      this.circle.centre.x *
-        Math.sin(this.tiltAngles.x) *
-        Math.sin(this.tiltAngles.z) +
-      this.circle.centre.y * Math.cos(this.tiltAngles.x);
+    const position =
+      this.physics.circle.isOnPlane || !this.physics.sphere
+        ? positionOnPlaneTo3D(
+            this.physics.circle.centre,
+            this.physics.tiltAngles,
+          )
+        : this.physics.sphere.centre;
+    if (!(this.physics.circle.isOnPlane || !this.physics.sphere)) {
+      console.log("blah");
+      debugger;
+    }
 
-    console.log(this.ball.position);
+    this.ball.position.x = position.x;
+    this.ball.position.y = position.y;
+    this.ball.position.z = position.z;
   }
 }
 
