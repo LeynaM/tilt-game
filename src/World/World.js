@@ -1,6 +1,7 @@
 import { createCamera } from "./components/camera.js";
 import { createCube } from "./components/cube.js";
 import { createBall } from "./components/ball.js";
+import { createFinish } from "./components/finish.js";
 import { createScene } from "./components/scene.js";
 import { createRenderer } from "./systems/renderer.js";
 import { Resizer } from "./systems/Resizer.js";
@@ -23,12 +24,13 @@ class World {
     renderer = createRenderer();
     container.append(renderer.domElement);
 
-    const cube = createCube();
-    const ball = createBall();
-    const light = createLights();
     const plane = {
       width: 6,
       height: 6,
+      finish: {
+        centre: new Vector2(2, 2),
+        radius: 0.3,
+      },
     };
     const circle = {
       radius: 0.2,
@@ -37,18 +39,26 @@ class World {
       acceleration: new Vector2(0, 0),
       isOnPlane: true,
     };
+
     let sphere = null;
 
     const tiltAngles = { x: 0, z: 0 };
 
-    physicsLoop = new PhysicsLoop(tiltAngles, circle, sphere);
-    scene.add(cube, ball, light);
+    physicsLoop = new PhysicsLoop(tiltAngles, circle, sphere, plane);
+
+    const light = createLights();
+    const cube = createCube(plane);
+    const ball = createBall();
+    const finish = createFinish(plane.finish);
+    scene.add(cube, ball, light, finish);
+
     animationLoop = new AnimationLoop(
       camera,
       scene,
       renderer,
       cube,
       ball,
+      finish,
       physicsLoop,
     );
 

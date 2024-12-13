@@ -1,8 +1,8 @@
 import { BoxGeometry, Mesh, MeshStandardMaterial } from "three";
 
-function createCube() {
+function createCube(plane) {
   // create a geometry
-  const geometry = new BoxGeometry(6, 0.1, 6);
+  const geometry = new BoxGeometry(plane.width, 0.1, plane.height);
 
   // create a default (white) Basic material
   const material = new MeshStandardMaterial({ color: 0x0ffff0 });

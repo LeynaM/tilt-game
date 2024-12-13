@@ -5,10 +5,11 @@ const PHYSICS_DELTA = 0.05;
 const GRAVITY = 2;
 
 class PhysicsLoop {
-  constructor(tiltAngles, circle, sphere) {
+  constructor(tiltAngles, circle, sphere, plane) {
     this.tiltAngles = tiltAngles;
     this.circle = circle;
     this.sphere = sphere;
+    this.plane = plane;
   }
 
   start() {
@@ -22,12 +23,21 @@ class PhysicsLoop {
   }
 
   physicsTick() {
+    const atFinish =
+      Math.abs(this.circle.centre.x - this.plane.finish.centre.x) <=
+        this.plane.finish.radius - this.circle.radius &&
+      Math.abs(this.circle.centre.y - this.plane.finish.centre.y) <=
+        this.plane.finish.radius - this.circle.radius;
+    if (atFinish) {
+      console.log("hello");
+    }
+
     this.circle.isOnPlane =
       this.circle.isOnPlane &&
-      this.circle.centre.x < 3 &&
-      this.circle.centre.x > -3 &&
-      this.circle.centre.y < 3 &&
-      this.circle.centre.y > -3;
+      this.circle.centre.x < this.plane.width / 2 &&
+      this.circle.centre.x > -this.plane.width / 2 &&
+      this.circle.centre.y < this.plane.height / 2 &&
+      this.circle.centre.y > -this.plane.height / 2;
 
     if (this.circle.isOnPlane) {
       this.circle.acceleration.x = GRAVITY * Math.sin(this.tiltAngles.z);

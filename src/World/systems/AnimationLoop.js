@@ -1,18 +1,18 @@
-import { Clock, Vector3 } from "three";
+import { Vector3, Vector2 } from "three";
 import { positionOnPlaneTo3D } from "../utils/utils";
 
-const clock = new Clock();
 const PHYSICS_DELTA = 0.05;
 const GRAVITY = 20;
 
 class AnimationLoop {
-  constructor(camera, scene, renderer, cube, ball, physics) {
+  constructor(camera, scene, renderer, cube, ball, finish, physics) {
     this.camera = camera;
     this.scene = scene;
     this.renderer = renderer;
     this.physics = physics;
     this.cube = cube;
     this.ball = ball;
+    this.finish = finish;
   }
 
   start() {
@@ -31,22 +31,31 @@ class AnimationLoop {
   animationTick() {
     this.cube.rotation.x = this.physics.tiltAngles.x;
     this.cube.rotation.z = this.physics.tiltAngles.z;
+    this.finish.rotation.x = this.cube.rotation.x + Math.PI / 2;
+    this.finish.rotation.y = this.cube.rotation.z;
 
-    const position =
+    const ballPosition =
       this.physics.circle.isOnPlane || !this.physics.sphere
         ? positionOnPlaneTo3D(
             this.physics.circle.centre,
             this.physics.tiltAngles,
           )
         : this.physics.sphere.centre;
-    if (!(this.physics.circle.isOnPlane || !this.physics.sphere)) {
-      console.log("blah");
-      debugger;
-    }
 
-    this.ball.position.x = position.x;
-    this.ball.position.y = position.y;
-    this.ball.position.z = position.z;
+    this.ball.position.x = ballPosition.x;
+    this.ball.position.y = ballPosition.y;
+    this.ball.position.z = ballPosition.z;
+
+    const finishPosition = positionOnPlaneTo3D(
+      new Vector2(
+        this.physics.plane.finish.centre.x,
+        this.physics.plane.finish.centre.y,
+      ),
+      this.physics.tiltAngles,
+    );
+    this.finish.position.x = finishPosition.x;
+    this.finish.position.y = finishPosition.y - 0.1;
+    this.finish.position.z = finishPosition.z;
   }
 }
 
