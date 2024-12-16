@@ -2,12 +2,20 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
+        <link rel="stylesheet" href="styles.css" />
         <link rel="icon" type="image/svg+xml" href="/vite.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Vite App</title>
     </head>
     <body style="height: 100vh; margin: 0">
-        <div id="container" style="height: 100%"></div>
+        <div id="container" style="height: 100%">
+            <div class="modal-backdrop">
+                <dialog open>
+                    <h1>Start game</h1>
+                    <button>Play</button>
+                </dialog>
+            </div>
+        </div>
         <script type="module" src="/src/main.js"></script>
     </body>
 </html>
