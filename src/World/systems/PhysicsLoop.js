@@ -1,4 +1,4 @@
-import { Clock, Vector3 } from "three";
+import { Clock, Vector3, Vector2 } from "three";
 import { positionOnPlaneTo3D } from "../utils/utils";
 
 const PHYSICS_DELTA = 0.05;
@@ -13,6 +13,13 @@ class PhysicsLoop {
   }
 
   start() {
+    this.tiltAngles.x = 0;
+    this.tiltAngles.z = 0;
+
+    this.circle.centre = new Vector2(0, 0);
+    this.circle.velocity = new Vector2(0, 0);
+    this.circle.acceleration = new Vector2(0, 0);
+    this.circle.isOnPlane = true;
     this.Loop = setInterval(() => {
       this.physicsTick();
     }, PHYSICS_DELTA * 1000);
@@ -22,6 +29,8 @@ class PhysicsLoop {
     clearInterval(this.physicsLoop);
   }
 
+  onFinish() {}
+
   physicsTick() {
     const atFinish =
       Math.abs(this.circle.centre.x - this.plane.finish.centre.x) <=
@@ -29,7 +38,7 @@ class PhysicsLoop {
       Math.abs(this.circle.centre.y - this.plane.finish.centre.y) <=
         this.plane.finish.radius - this.circle.radius;
     if (atFinish) {
-      console.log("hello");
+      this.onFinish();
     }
 
     this.circle.isOnPlane =

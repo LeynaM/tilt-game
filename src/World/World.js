@@ -45,6 +45,7 @@ class World {
     const tiltAngles = { x: 0, z: 0 };
 
     physicsLoop = new PhysicsLoop(tiltAngles, circle, sphere, plane);
+    physicsLoop.onFinish = () => this.onFinish();
 
     const light = createLights();
     const cube = createCube(plane);
@@ -65,7 +66,9 @@ class World {
     const resizer = new Resizer(container, camera, renderer);
 
     const tiltControl = new TiltControls(container, tiltAngles);
+    this.render();
   }
+
   render() {
     renderer.render(scene, camera);
   }
@@ -79,6 +82,8 @@ class World {
     animationLoop.stop();
     physicsLoop.stop();
   }
+
+  onFinish() {}
 }
 
 export { World };
