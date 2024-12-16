@@ -20,16 +20,18 @@ class PhysicsLoop {
     this.circle.velocity = new Vector2(0, 0);
     this.circle.acceleration = new Vector2(0, 0);
     this.circle.isOnPlane = true;
-    this.Loop = setInterval(() => {
+    this.loop = setInterval(() => {
       this.physicsTick();
     }, PHYSICS_DELTA * 1000);
   }
 
   stop() {
-    clearInterval(this.physicsLoop);
+    clearInterval(this.loop);
   }
 
-  onFinish() {}
+  onWin() {}
+
+  onLose() {}
 
   physicsTick() {
     const atFinish =
@@ -38,7 +40,8 @@ class PhysicsLoop {
       Math.abs(this.circle.centre.y - this.plane.finish.centre.y) <=
         this.plane.finish.radius - this.circle.radius;
     if (atFinish) {
-      this.onFinish();
+      this.onWin();
+      return;
     }
 
     this.circle.isOnPlane =
@@ -77,6 +80,8 @@ class PhysicsLoop {
         this.sphere.velocity.y + this.sphere.acceleration.y * PHYSICS_DELTA;
       this.sphere.centre.y =
         this.sphere.centre.y + this.sphere.velocity.y * PHYSICS_DELTA;
+
+      this.onLose();
     }
   }
 }

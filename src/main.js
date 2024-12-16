@@ -7,9 +7,17 @@ function startGame(dialog) {
   dialog.style.display = "none";
 }
 
-function endGame(dialog) {
+function winGame(dialog) {
   world.stop();
   document.getElementById("dialog-header").innerHTML = "You win!";
+  document.getElementById("play-button").innerHTML = "Play again";
+  dialog.style.display = "block";
+}
+
+function loseGame(dialog) {
+  world.stop();
+  document.getElementById("dialog-header").innerHTML = "You lose!";
+  document.getElementById("play-button").innerHTML = "Play again";
   dialog.style.display = "block";
 }
 
@@ -17,7 +25,8 @@ function main() {
   const container = document.getElementById("container");
   const dialog = document.querySelector(".modal-backdrop");
   world = new World(container);
-  world.onFinish = () => endGame(dialog);
+  world.onWin = () => winGame(dialog);
+  world.onLose = () => loseGame(dialog);
 
   const startGameButton = document.getElementById("play-button");
   startGameButton.onclick = () => startGame(dialog);

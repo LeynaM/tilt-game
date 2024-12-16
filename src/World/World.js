@@ -45,7 +45,8 @@ class World {
     const tiltAngles = { x: 0, z: 0 };
 
     physicsLoop = new PhysicsLoop(tiltAngles, circle, sphere, plane);
-    physicsLoop.onFinish = () => this.onFinish();
+    physicsLoop.onWin = () => this.onWin();
+    physicsLoop.onLose = () => this.onLose();
 
     const light = createLights();
     const cube = createCube(plane);
@@ -83,7 +84,9 @@ class World {
     physicsLoop.stop();
   }
 
-  onFinish() {}
+  onWin() {}
+
+  onLose() {}
 }
 
 export { World };
