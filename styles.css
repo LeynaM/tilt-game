@@ -37,7 +37,8 @@ button:hover {
 #dialog-header {
     margin: 0;
 }
-#score {
+
+p {
     display: none;
     margin: 0;
     font-size: 20px;

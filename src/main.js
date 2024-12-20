@@ -3,6 +3,7 @@ import { Clock } from "three";
 
 let world;
 let clock;
+let highscore;
 
 function startGame(dialog) {
   world.start();
@@ -14,10 +15,18 @@ function startGame(dialog) {
 function winGame(dialog) {
   world.stop();
   const score = clock.getElapsedTime();
+  if (!highscore || score < highscore) {
+    highscore = score;
+    document.getElementById("dialog-header").innerHTML = "New highscore!";
+  } else {
+    document.getElementById("dialog-header").innerHTML = "You win!";
+  }
   clock.stop();
-  document.getElementById("dialog-header").innerHTML = "You win!";
-  document.getElementById("score").style.display = "Block";
-  document.getElementById("score").innerHTML = "Score: " + score + " seconds";
+  document.getElementById("score").style.display = "block";
+  document.getElementById("score").innerHTML = "Score: " + score + "s";
+  document.getElementById("highscore").style.display = "block";
+  document.getElementById("highscore").innerHTML =
+    "Highscore: " + highscore + "s";
   document.getElementById("play-button").innerHTML = "Play again";
   document.body.style.cursor = "auto";
   dialog.style.display = "block";
@@ -25,6 +34,13 @@ function winGame(dialog) {
 
 function loseGame(dialog) {
   world.stop();
+  if (highscore) {
+    document.getElementById("highscore").style.display = "block";
+    document.getElementById("highscore").innerHTML =
+      "Highscore: " + highscore + "s";
+  } else {
+    document.getElementById("highscore").style.display = "none";
+  }
   document.getElementById("score").style.display = "none";
   document.getElementById("dialog-header").innerHTML = "You lose!";
   document.getElementById("play-button").innerHTML = "Play again";
