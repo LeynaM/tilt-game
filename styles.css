@@ -6,15 +6,21 @@ dialog {
     flex-direction: column;
     align-items: center;
     box-shadow: 4px 4px 4px 0px rgba(61, 61, 61, 0.75);
-    border: 2px solid black;
+    border: 2px solid midnightblue;
     border-radius: 4px;
+    gap: 24px;
 }
 
 button {
     background-color: lightskyblue;
-    border: 1px solid black;
+    border: 1px solid midnightblue;
     border-radius: 4px;
     padding: 6px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: dodgerblue;
+    box-shadow: 1px 1px 1px 0px rgba(61, 61, 61, 0.75);
 }
 
 .modal-backdrop {
@@ -26,4 +32,13 @@ button {
 
 .container {
     position: relative;
+}
+
+#dialog-header {
+    margin: 0;
+}
+#score {
+    display: none;
+    margin: 0;
+    font-size: 20px;
 }

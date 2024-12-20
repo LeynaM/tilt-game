@@ -1,4 +1,4 @@
-import { Clock, Vector3, Vector2 } from "three";
+import { Vector3, Vector2 } from "three";
 import { positionOnPlaneTo3D } from "../utils/utils";
 
 const PHYSICS_DELTA = 0.05;
