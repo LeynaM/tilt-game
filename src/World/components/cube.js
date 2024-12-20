@@ -9,6 +9,8 @@ function createCube(plane) {
 
   // create a Mesh containing the geometry and material
   const cube = new Mesh(geometry, material);
+  cube.receiveShadow = true;
+  cube.castShadow = true;
 
   cube.tick = () => {
     // increase the cube's rotation each frame

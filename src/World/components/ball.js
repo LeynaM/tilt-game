@@ -7,6 +7,8 @@ function createBall() {
 
   const ball = new Mesh(geometry, material);
   ball.position.set(0, 0, 0);
+  ball.castShadow = true;
+  ball.receiveShadow = true;
 
   return ball;
 }

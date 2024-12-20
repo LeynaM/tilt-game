@@ -46,11 +46,11 @@ class World {
     physicsLoop.onWin = () => this.onWin();
     physicsLoop.onLose = () => this.onLose();
 
-    const light = createLights();
+    const lights = createLights();
     const cube = createCube(plane);
     const ball = createBall();
     const finish = createFinish(plane.finish);
-    scene.add(cube, ball, light, finish);
+    scene.add(cube, ball, ...lights, finish);
 
     animationLoop = new AnimationLoop(
       camera,
