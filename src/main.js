@@ -20,7 +20,7 @@ const DIALOG_TYPES = {
 };
 
 function showDialog(type, score, isNewHighscore = false) {
-  const title = isNewHighscore ? "New Highscore!" : DIALOG_TYPES[type].title;
+  const title = isNewHighscore ? "New highscore!" : DIALOG_TYPES[type].title;
   dialog.title.innerHTML = title;
 
   dialog.score.style.display = type === DIALOG_TYPES.WIN.key ? "block" : "none";

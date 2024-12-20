@@ -17,6 +17,7 @@ button {
     border-radius: 4px;
     padding: 6px;
     cursor: pointer;
+    font-size: 16px;
 }
 button:hover {
     background-color: dodgerblue;
@@ -42,4 +43,8 @@ p {
     display: none;
     margin: 0;
     font-size: 20px;
+}
+
+#score {
+    padding-left: 44px;
 }
