@@ -4,60 +4,81 @@ import { Clock } from "three";
 let world;
 let clock;
 let highscore;
+let container;
+let dialog;
+const DIALOG_TYPES = {
+  WIN: {
+    key: "WIN",
+    title: "You win!",
+    button: "Play again",
+  },
+  LOSE: {
+    key: "LOSE",
+    title: "You lose!",
+    button: "Play again",
+  },
+};
+
+function showDialog(type, score, isNewHighscore = false) {
+  const title = isNewHighscore ? "New Highscore!" : DIALOG_TYPES[type].title;
+  dialog.title.innerHTML = title;
+
+  dialog.score.style.display = type === DIALOG_TYPES.WIN.key ? "block" : "none";
+  dialog.score.innerHTML = "Score: " + score + "s";
+
+  dialog.highscore.style.display = highscore ? "block" : "none";
+  dialog.highscore.innerHTML = "Highscore: " + highscore + "s";
+
+  dialog.button.innerHTML = DIALOG_TYPES[type].button;
+
+  container.style.cursor = "auto";
+  dialog.modal.style.display = "block";
+}
+
+function hideDialog() {
+  container.style.cursor = "none";
+  dialog.modal.style.display = "none";
+}
 
 function startGame(dialog) {
   world.start();
   clock.start();
-  dialog.style.display = "none";
-  document.body.style.cursor = "none";
+  hideDialog();
 }
 
 function winGame(dialog) {
   world.stop();
   const score = clock.getElapsedTime();
+  let isNewHighscore = false;
   if (!highscore || score < highscore) {
     highscore = score;
-    document.getElementById("dialog-header").innerHTML = "New highscore!";
-  } else {
-    document.getElementById("dialog-header").innerHTML = "You win!";
+    isNewHighscore = true;
   }
   clock.stop();
-  document.getElementById("score").style.display = "block";
-  document.getElementById("score").innerHTML = "Score: " + score + "s";
-  document.getElementById("highscore").style.display = "block";
-  document.getElementById("highscore").innerHTML =
-    "Highscore: " + highscore + "s";
-  document.getElementById("play-button").innerHTML = "Play again";
-  document.body.style.cursor = "auto";
-  dialog.style.display = "block";
+  showDialog(DIALOG_TYPES.WIN.key, score, isNewHighscore);
 }
 
 function loseGame(dialog) {
   world.stop();
-  if (highscore) {
-    document.getElementById("highscore").style.display = "block";
-    document.getElementById("highscore").innerHTML =
-      "Highscore: " + highscore + "s";
-  } else {
-    document.getElementById("highscore").style.display = "none";
-  }
-  document.getElementById("score").style.display = "none";
-  document.getElementById("dialog-header").innerHTML = "You lose!";
-  document.getElementById("play-button").innerHTML = "Play again";
-  document.body.style.cursor = "auto";
-  dialog.style.display = "block";
+  showDialog(DIALOG_TYPES.LOSE.key);
+  clock.stop();
 }
 
 function main() {
-  const container = document.getElementById("container");
-  const dialog = document.querySelector(".modal-backdrop");
+  container = document.getElementById("container");
+  dialog = {
+    modal: document.querySelector(".modal-backdrop"),
+    title: document.getElementById("dialog-header"),
+    score: document.getElementById("score"),
+    highscore: document.getElementById("highscore"),
+    button: document.getElementById("play-button"),
+  };
   world = new World(container);
   clock = new Clock();
   world.onWin = () => winGame(dialog);
   world.onLose = () => loseGame(dialog);
 
-  const startGameButton = document.getElementById("play-button");
-  startGameButton.onclick = () => startGame(dialog);
+  dialog.button.onclick = () => startGame(dialog);
 }
 
 main();
