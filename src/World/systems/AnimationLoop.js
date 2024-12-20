@@ -37,7 +37,11 @@ class AnimationLoop {
     const ballPosition =
       this.physics.circle.isOnPlane || !this.physics.sphere
         ? positionOnPlaneTo3D(
-            this.physics.circle.centre,
+            new Vector3(
+              this.physics.circle.centre.x,
+              this.physics.circle.centre.y,
+              -0.2,
+            ),
             this.physics.tiltAngles,
           )
         : this.physics.sphere.centre;
@@ -47,14 +51,15 @@ class AnimationLoop {
     this.ball.position.z = ballPosition.z;
 
     const finishPosition = positionOnPlaneTo3D(
-      new Vector2(
+      new Vector3(
         this.physics.plane.finish.centre.x,
         this.physics.plane.finish.centre.y,
+        -0.1,
       ),
       this.physics.tiltAngles,
     );
     this.finish.position.x = finishPosition.x;
-    this.finish.position.y = finishPosition.y - 0.1;
+    this.finish.position.y = finishPosition.y;
     this.finish.position.z = finishPosition.z;
   }
 }

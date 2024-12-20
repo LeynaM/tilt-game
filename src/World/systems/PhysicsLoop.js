@@ -66,7 +66,10 @@ class PhysicsLoop {
     } else {
       if (!this.sphere) {
         this.sphere = {
-          centre: positionOnPlaneTo3D(this.circle.centre, this.tiltAngles),
+          centre: positionOnPlaneTo3D(
+            new Vector3(this.circle.centre.x, this.circle.centre.y, -0.2),
+            this.tiltAngles,
+          ),
           //This is wrong (need to include the vertical component)
           velocity: new Vector3(
             this.circle.velocity.x,

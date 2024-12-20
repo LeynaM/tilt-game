@@ -68,6 +68,8 @@ class World {
 
     const tiltControl = new TiltControls(container, tiltAngles);
     this.render();
+
+    resizer.onResize = () => this.render();
   }
 
   render() {
