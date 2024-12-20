@@ -40,11 +40,9 @@ class World {
       isOnPlane: true,
     };
 
-    let sphere = null;
-
     const tiltAngles = { x: 0, z: 0 };
 
-    physicsLoop = new PhysicsLoop(tiltAngles, circle, sphere, plane);
+    physicsLoop = new PhysicsLoop(tiltAngles, circle, plane);
     physicsLoop.onWin = () => this.onWin();
     physicsLoop.onLose = () => this.onLose();
 

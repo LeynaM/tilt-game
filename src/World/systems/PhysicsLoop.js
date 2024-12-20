@@ -5,10 +5,9 @@ const PHYSICS_DELTA = 0.05;
 const GRAVITY = 2;
 
 class PhysicsLoop {
-  constructor(tiltAngles, circle, sphere, plane) {
+  constructor(tiltAngles, circle, plane) {
     this.tiltAngles = tiltAngles;
     this.circle = circle;
-    this.sphere = sphere;
     this.plane = plane;
   }
 
@@ -64,26 +63,6 @@ class PhysicsLoop {
       this.circle.centre.y =
         this.circle.centre.y + this.circle.velocity.y * PHYSICS_DELTA;
     } else {
-      if (!this.sphere) {
-        this.sphere = {
-          centre: positionOnPlaneTo3D(
-            new Vector3(this.circle.centre.x, this.circle.centre.y, -0.2),
-            this.tiltAngles,
-          ),
-          //This is wrong (need to include the vertical component)
-          velocity: new Vector3(
-            this.circle.velocity.x,
-            0,
-            this.circle.velocity.y,
-          ),
-          acceleration: new Vector3(0, GRAVITY, 0),
-        };
-      }
-      this.sphere.velocity.y =
-        this.sphere.velocity.y + this.sphere.acceleration.y * PHYSICS_DELTA;
-      this.sphere.centre.y =
-        this.sphere.centre.y + this.sphere.velocity.y * PHYSICS_DELTA;
-
       this.onLose();
     }
   }

@@ -34,18 +34,14 @@ class AnimationLoop {
     this.finish.rotation.x = this.cube.rotation.x + Math.PI / 2;
     this.finish.rotation.y = this.cube.rotation.z;
 
-    const ballPosition =
-      this.physics.circle.isOnPlane || !this.physics.sphere
-        ? positionOnPlaneTo3D(
-            new Vector3(
-              this.physics.circle.centre.x,
-              this.physics.circle.centre.y,
-              -0.2,
-            ),
-            this.physics.tiltAngles,
-          )
-        : this.physics.sphere.centre;
-
+    const ballPosition = positionOnPlaneTo3D(
+      new Vector3(
+        this.physics.circle.centre.x,
+        this.physics.circle.centre.y,
+        -0.2,
+      ),
+      this.physics.tiltAngles,
+    );
     this.ball.position.x = ballPosition.x;
     this.ball.position.y = ballPosition.y;
     this.ball.position.z = ballPosition.z;
