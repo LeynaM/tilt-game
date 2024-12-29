@@ -48,3 +48,12 @@ p {
 #score {
     padding-left: 44px;
 }
+
+#time-box {
+    display: none;
+    position: absolute;
+    right: 0;
+    margin: 24px;
+    font-size: 32px;
+    color: white;
+}

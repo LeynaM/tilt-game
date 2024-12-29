@@ -6,6 +6,9 @@ let clock;
 let highscore;
 let container;
 let dialog;
+let timeBox;
+let timeBoxIntervalId;
+
 const DIALOG_TYPES = {
   WIN: {
     key: "WIN",
@@ -40,15 +43,28 @@ function hideDialog() {
   dialog.modal.style.display = "none";
 }
 
+function showTimeBox() {
+  timeBox.style.display = "block";
+  timeBoxIntervalId = setInterval(() => {
+    timeBox.innerHTML = clock.getElapsedTime().toFixed(3) + "s";
+  }, 50);
+}
+
+function hideTimeBox() {
+  timeBox.style.display = "none";
+  clearInterval(timeBoxIntervalId);
+}
+
 function startGame(dialog) {
   world.start();
   clock.start();
   hideDialog();
+  showTimeBox();
 }
 
 function winGame(dialog) {
   world.stop();
-  const score = clock.getElapsedTime();
+  const score = clock.getElapsedTime().toFixed(3);
   let isNewHighscore = false;
   if (!highscore || score < highscore) {
     highscore = score;
@@ -56,12 +72,14 @@ function winGame(dialog) {
   }
   clock.stop();
   showDialog(DIALOG_TYPES.WIN.key, score, isNewHighscore);
+  hideTimeBox();
 }
 
 function loseGame(dialog) {
   world.stop();
   showDialog(DIALOG_TYPES.LOSE.key);
   clock.stop();
+  hideTimeBox();
 }
 
 function main() {
@@ -73,6 +91,8 @@ function main() {
     highscore: document.getElementById("highscore"),
     button: document.getElementById("play-button"),
   };
+  timeBox = document.getElementById("time-box");
+
   world = new World(container);
   clock = new Clock();
   world.onWin = () => winGame(dialog);
