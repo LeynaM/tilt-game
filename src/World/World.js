@@ -1,5 +1,5 @@
 import { createCamera } from "./components/camera.js";
-import { createCube } from "./components/cube.js";
+import { createPlatform } from "./components/platform.js";
 import { createBall } from "./components/ball.js";
 import { createFinish } from "./components/finish.js";
 import { createScene } from "./components/scene.js";
@@ -19,14 +19,10 @@ let physicsLoop;
 
 class World {
   constructor(container) {
-    camera = createCamera();
-    scene = createScene();
-    renderer = createRenderer();
-    container.append(renderer.domElement);
-
     const plane = {
       width: 6,
       height: 6,
+      resolution: 4,
       finish: {
         centre: new Vector2(2, 2),
         radius: 0.3,
@@ -46,21 +42,26 @@ class World {
     physicsLoop.onWin = () => this.onWin();
     physicsLoop.onLose = () => this.onLose();
 
+    camera = createCamera();
+    scene = createScene();
+    renderer = createRenderer();
     const lights = createLights();
-    const cube = createCube(plane);
+    const platforms = createPlatform(plane);
     const ball = createBall();
     const finish = createFinish(plane.finish);
-    scene.add(cube, ball, ...lights, finish);
+    scene.add(...platforms.flat(), ball, ...lights, finish);
 
     animationLoop = new AnimationLoop(
       camera,
       scene,
       renderer,
-      cube,
+      platforms,
       ball,
       finish,
       physicsLoop,
     );
+
+    container.append(renderer.domElement);
 
     const resizer = new Resizer(container, camera, renderer);
 

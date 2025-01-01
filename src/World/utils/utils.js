@@ -1,5 +1,19 @@
 import { Vector3 } from "three";
 
+export function get3DPlatformPositionfromGridCoords(
+  i,
+  j,
+  planeWidth,
+  planeResolution,
+) {
+  const a = planeWidth / planeResolution;
+  const b = (planeResolution - 1) / 2;
+
+  const x = a * (i - b);
+  const z = a * (j - b);
+  return new Vector3(x, 0, z);
+}
+
 export function positionOnPlaneTo3D(positionOnPlane, tiltAngles) {
   const x =
     positionOnPlane.x * Math.cos(tiltAngles.z) -
