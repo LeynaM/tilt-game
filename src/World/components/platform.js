@@ -3,8 +3,6 @@ import { Vector3 } from "three";
 import { get3DPlatformPositionfromGridCoords } from "../utils/utils";
 
 function createPlatform(plane) {
-  const material = new MeshStandardMaterial({ color: 0x0ffff0 });
-
   const platforms = new Array(plane.resolution);
   for (let i = 0; i < plane.resolution; i++) {
     platforms[i] = new Array(plane.resolution);
@@ -14,7 +12,7 @@ function createPlatform(plane) {
         0.1,
         plane.height / plane.resolution,
       );
-
+      const material = new MeshStandardMaterial({ color: 0x0ffff0 });
       const platform = new Mesh(geometry, material);
       const position = get3DPlatformPositionfromGridCoords(
         i,

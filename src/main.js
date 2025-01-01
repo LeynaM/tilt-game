@@ -64,11 +64,10 @@ function startGame(dialog) {
 
 function winGame(dialog) {
   world.stop();
-  const score = clock.getElapsedTime().toFixed(3);
-  let isNewHighscore = false;
-  if (!highscore || score < highscore) {
+  const score = parseFloat(clock.getElapsedTime().toFixed(3));
+  let isNewHighscore = !highscore || score < highscore;
+  if (isNewHighscore) {
     highscore = score;
-    isNewHighscore = true;
   }
   clock.stop();
   showDialog(DIALOG_TYPES.WIN.key, score, isNewHighscore);

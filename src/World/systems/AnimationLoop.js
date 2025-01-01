@@ -1,21 +1,21 @@
-import { Vector3, Vector2 } from "three";
+import { Vector3, Vector2, Color } from "three";
 import {
   positionOnPlaneTo3D,
   get3DPlatformPositionfromGridCoords,
 } from "../utils/utils";
+import { PLATFORM_TYPES } from "../constants/constants";
 
 const PHYSICS_DELTA = 0.05;
 const GRAVITY = 20;
 
 class AnimationLoop {
-  constructor(camera, scene, renderer, platforms, ball, finish, physics) {
+  constructor(camera, scene, renderer, platforms, ball, physics) {
     this.camera = camera;
     this.scene = scene;
     this.renderer = renderer;
     this.physics = physics;
     this.platforms = platforms;
     this.ball = ball;
-    this.finish = finish;
   }
 
   start() {
@@ -53,6 +53,10 @@ class AnimationLoop {
         platform.position.x = platformPosition.x;
         platform.position.y = platformPosition.y;
         platform.position.z = platformPosition.z;
+
+        if (this.physics.plane.platforms[i][j].type === PLATFORM_TYPES.FINISH) {
+          platform.material.color = new Color("black");
+        }
       }
     }
 
@@ -68,19 +72,19 @@ class AnimationLoop {
     this.ball.position.y = ballPosition.y;
     this.ball.position.z = ballPosition.z;
 
-    this.finish.rotation.x = this.physics.tiltAngles.x + Math.PI / 2;
-    this.finish.rotation.y = this.physics.tiltAngles.z;
-    const finishPosition = positionOnPlaneTo3D(
-      new Vector3(
-        this.physics.plane.finish.centre.x,
-        this.physics.plane.finish.centre.y,
-        -0.1,
-      ),
-      this.physics.tiltAngles,
-    );
-    this.finish.position.x = finishPosition.x;
-    this.finish.position.y = finishPosition.y;
-    this.finish.position.z = finishPosition.z;
+    // this.finish.rotation.x = this.physics.tiltAngles.x + Math.PI / 2;
+    // this.finish.rotation.y = this.physics.tiltAngles.z;
+    // const finishPosition = positionOnPlaneTo3D(
+    //   new Vector3(
+    //     this.physics.plane.finish.centre.x,
+    //     this.physics.plane.finish.centre.y,
+    //     -0.1,
+    //   ),
+    //   this.physics.tiltAngles,
+    // );
+    // this.finish.position.x = finishPosition.x;
+    // this.finish.position.y = finishPosition.y;
+    // this.finish.position.z = finishPosition.z;
   }
 }
 

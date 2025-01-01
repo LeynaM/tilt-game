@@ -10,6 +10,7 @@ import { createLights } from "./components/lights.js";
 import { AnimationLoop } from "./systems/AnimationLoop.js";
 import { PhysicsLoop } from "./systems/PhysicsLoop.js";
 import { Vector2, Vector3 } from "three";
+import { PLATFORM_TYPES } from "./constants/constants.js";
 
 let camera;
 let renderer;
@@ -22,17 +23,31 @@ class World {
     const plane = {
       width: 6,
       height: 6,
-      resolution: 4,
+      resolution: 16,
       finish: {
         centre: new Vector2(2, 2),
         radius: 0.3,
       },
     };
+    plane.platforms = new Array(plane.resolution);
+    for (let i = 0; i < plane.resolution; i++) {
+      plane.platforms[i] = new Array(plane.resolution);
+      for (let j = 0; j < plane.resolution; j++) {
+        plane.platforms[i][j] = {
+          type: PLATFORM_TYPES.DEFAULT,
+        };
+      }
+    }
+    const randI = Math.floor(Math.random() * plane.resolution);
+    const randJ = Math.floor(Math.random() * plane.resolution);
+    plane.platforms[randI][randJ].type = PLATFORM_TYPES.FINISH;
+    console.log(randI, randJ);
+
     const circle = {
       radius: 0.2,
-      centre: new Vector2(0, 0),
-      velocity: new Vector2(0, 0),
-      acceleration: new Vector2(0, 0),
+      centre: undefined,
+      velocity: undefined,
+      acceleration: undefined,
       isOnPlane: true,
     };
 
@@ -48,8 +63,8 @@ class World {
     const lights = createLights();
     const platforms = createPlatform(plane);
     const ball = createBall();
-    const finish = createFinish(plane.finish);
-    scene.add(...platforms.flat(), ball, ...lights, finish);
+    // const finish = createFinish(plane.finish);
+    scene.add(...platforms.flat(), ball, ...lights);
 
     animationLoop = new AnimationLoop(
       camera,
@@ -57,7 +72,6 @@ class World {
       renderer,
       platforms,
       ball,
-      finish,
       physicsLoop,
     );
 
