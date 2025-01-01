@@ -1,9 +1,6 @@
-import { World } from "./World/World.js";
-import { Clock } from "three";
+import { Game } from "./Game/Game.js";
 
-let world;
-let clock;
-let highscore;
+let game;
 let container;
 let dialog;
 let timeBox;
@@ -22,15 +19,17 @@ const DIALOG_TYPES = {
   },
 };
 
-function showDialog(type, score, isNewHighscore = false) {
-  const title = isNewHighscore ? "New highscore!" : DIALOG_TYPES[type].title;
+function showDialog(type) {
+  const title = game.isNewHighscore
+    ? "New highscore!"
+    : DIALOG_TYPES[type].title;
   dialog.title.innerHTML = title;
 
   dialog.score.style.display = type === DIALOG_TYPES.WIN.key ? "block" : "none";
-  dialog.score.innerHTML = "Score: " + score + "s";
+  dialog.score.innerHTML = "Score: " + game.score + "s";
 
-  dialog.highscore.style.display = highscore ? "block" : "none";
-  dialog.highscore.innerHTML = "Highscore: " + highscore + "s";
+  dialog.highscore.style.display = game.highscore ? "block" : "none";
+  dialog.highscore.innerHTML = "Highscore: " + game.highscore + "s";
 
   dialog.button.innerHTML = DIALOG_TYPES[type].button;
 
@@ -46,7 +45,7 @@ function hideDialog() {
 function showTimeBox() {
   timeBox.style.display = "block";
   timeBoxIntervalId = setInterval(() => {
-    timeBox.innerHTML = clock.getElapsedTime().toFixed(3) + "s";
+    timeBox.innerHTML = game.clock.getElapsedTime().toFixed(3) + "s";
   }, 50);
 }
 
@@ -56,28 +55,20 @@ function hideTimeBox() {
 }
 
 function startGame(dialog) {
-  world.start();
-  clock.start();
+  game.start();
   hideDialog();
   showTimeBox();
 }
 
 function winGame(dialog) {
-  world.stop();
-  const score = parseFloat(clock.getElapsedTime().toFixed(3));
-  let isNewHighscore = !highscore || score < highscore;
-  if (isNewHighscore) {
-    highscore = score;
-  }
-  clock.stop();
-  showDialog(DIALOG_TYPES.WIN.key, score, isNewHighscore);
+  game.stop();
+  showDialog(DIALOG_TYPES.WIN.key);
   hideTimeBox();
 }
 
 function loseGame(dialog) {
-  world.stop();
+  game.stop();
   showDialog(DIALOG_TYPES.LOSE.key);
-  clock.stop();
   hideTimeBox();
 }
 
@@ -92,10 +83,9 @@ function main() {
   };
   timeBox = document.getElementById("time-box");
 
-  world = new World(container);
-  clock = new Clock();
-  world.onWin = () => winGame(dialog);
-  world.onLose = () => loseGame(dialog);
+  game = new Game(container);
+  game.onWin = () => winGame(dialog);
+  game.onLose = () => loseGame(dialog);
 
   dialog.button.onclick = () => startGame(dialog);
 }

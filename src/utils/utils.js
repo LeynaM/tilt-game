@@ -3,10 +3,10 @@ import { Vector3 } from "three";
 export function get3DPlatformPositionfromGridCoords(
   i,
   j,
-  planeWidth,
+  planeSize,
   planeResolution,
 ) {
-  const a = planeWidth / planeResolution;
+  const a = planeSize / planeResolution;
   const b = (planeResolution - 1) / 2;
 
   const x = a * (i - b);
