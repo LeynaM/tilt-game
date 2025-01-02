@@ -1,5 +1,6 @@
 import { BoxGeometry, Mesh, MeshStandardMaterial } from "three";
 import { get3DPlatformPositionfromGridCoords } from "/src/utils/utils";
+import { PLATFORM_COLORS } from "/src/constants/constants.js";
 
 export function createPlatforms(plane) {
   const platforms = new Array(plane.resolution);
@@ -11,7 +12,9 @@ export function createPlatforms(plane) {
         0.1,
         plane.size / plane.resolution,
       );
-      const material = new MeshStandardMaterial({ color: 0x0ffff0 });
+      const material = new MeshStandardMaterial({
+        color: PLATFORM_COLORS.DEFAULT,
+      });
       const platform = new Mesh(geometry, material);
       const position = get3DPlatformPositionfromGridCoords(
         i,

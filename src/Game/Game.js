@@ -1,16 +1,15 @@
 import { PhysicsLoop } from "./physics/PhysicsLoop";
 import { Plane } from "./physics/Plane";
 import { Circle } from "./physics/Circle";
-import { Vector2, Clock } from "three";
+import { Vector2 } from "three";
 import { World } from "./world/World";
 
 export class Game {
   constructor(container) {
     this.container = container;
 
-    this.clock = new Clock();
-    this.score;
-    this.highscore;
+    this.score = 0;
+    this.highscore = 0;
     this.isNewHighscore;
 
     this.plane = new Plane(6, 16);
@@ -22,14 +21,17 @@ export class Game {
       this.circle,
       this.plane,
     );
-    this.physicsLoop.onWin = () => {
-      this.updateScores();
-      this.clock.stop();
-      this.onWin();
+    this.physicsLoop.onScore = () => {
+      this.plane.updateFinish();
+      this.score++;
+      this.onScoreUpdated();
     };
-    this.physicsLoop.onLose = () => {
-      this.clock.stop();
-      this.onLose();
+    this.physicsLoop.onGameOver = () => {
+      if (this.score > this.highscore) {
+        this.highscore = this.score;
+        this.isNewHighscore = true;
+      }
+      this.onGameOver();
     };
     this.world = new World(
       this.container,
@@ -53,6 +55,7 @@ export class Game {
   }
 
   resetState() {
+    this.score = 0;
     this.isNewHighscore = false;
 
     this.tiltAngles.x = 0;
@@ -65,9 +68,9 @@ export class Game {
 
   start() {
     this.resetState();
-    this.clock.start();
     this.physicsLoop.start();
     this.world.startAnimationLoop();
+    this.onScoreUpdated();
   }
 
   stop() {
@@ -75,15 +78,7 @@ export class Game {
     this.world.stopAnimationLoop();
   }
 
-  updateScores() {
-    this.score = parseFloat(this.clock.getElapsedTime().toFixed(3));
-    this.isNewHighscore = !this.highscore || this.score < this.highscore;
-    if (this.isNewHighscore) {
-      this.highscore = this.score;
-    }
-  }
+  onScoreUpdated() {}
 
-  onWin() {}
-
-  onLose() {}
+  onGameOver() {}
 }

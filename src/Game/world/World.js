@@ -6,7 +6,7 @@ import { createRenderer } from "./systems/renderer.js";
 import { Resizer } from "./systems/Resizer.js";
 import { createLights } from "./components/lights.js";
 import { Vector3, Color } from "three";
-import { PLATFORM_TYPES } from "/src/constants/constants.js";
+import { PLATFORM_TYPES, PLATFORM_COLORS } from "/src/constants/constants.js";
 import {
   get3DPlatformPositionfromGridCoords,
   positionOnPlaneTo3D,
@@ -75,7 +75,10 @@ export class World {
         platform.position.z = platformPosition.z;
 
         if (this.plane.tiles[i][j].type === PLATFORM_TYPES.FINISH) {
-          platform.material.color = new Color("black");
+          platform.material.color = new Color(PLATFORM_COLORS.FINISH);
+        }
+        if (this.plane.tiles[i][j].type === PLATFORM_TYPES.DEFAULT) {
+          platform.material.color = new Color(PLATFORM_COLORS.DEFAULT);
         }
       }
     }

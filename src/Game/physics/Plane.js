@@ -18,5 +18,19 @@ export class Plane {
     const randI = Math.floor(Math.random() * this.resolution);
     const randJ = Math.floor(Math.random() * this.resolution);
     this.tiles[randI][randJ].type = PLATFORM_TYPES.FINISH;
+    this.finishCoords = { i: randI, j: randJ };
+  }
+
+  updateFinish() {
+    let randI = Math.floor(Math.random() * this.resolution);
+    let randJ = Math.floor(Math.random() * this.resolution);
+    while (randI === this.finishCoords.i && randJ === this.finishCoords.j) {
+      randI = Math.floor(Math.random() * this.resolution);
+      randJ = Math.floor(Math.random() * this.resolution);
+    }
+    this.tiles[this.finishCoords.i][this.finishCoords.j].type =
+      PLATFORM_TYPES.DEFAULT;
+    this.tiles[randI][randJ].type = PLATFORM_TYPES.FINISH;
+    this.finishCoords = { i: randI, j: randJ };
   }
 }

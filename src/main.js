@@ -3,35 +3,22 @@ import { Game } from "./Game/Game.js";
 let game;
 let container;
 let dialog;
-let timeBox;
-let timeBoxIntervalId;
+let scoreBox;
 
-const DIALOG_TYPES = {
-  WIN: {
-    key: "WIN",
-    title: "You win!",
-    button: "Play again",
-  },
-  LOSE: {
-    key: "LOSE",
-    title: "You lose!",
-    button: "Play again",
-  },
-};
+function showDialog() {
+  dialog.title.innerHTML = "Game over";
 
-function showDialog(type) {
-  const title = game.isNewHighscore
-    ? "New highscore!"
-    : DIALOG_TYPES[type].title;
-  dialog.title.innerHTML = title;
+  dialog.score.style.display = "block";
+  dialog.highscore.style.display =
+    game.highscore > 0 && !game.isNewHighscore ? "block" : "none";
+  if (game.isNewHighscore) {
+    dialog.score.innerHTML = "New Highscore: " + game.score;
+  } else {
+    dialog.score.innerHTML = "Score: " + game.score;
+    dialog.highscore.innerHTML = "Highscore: " + game.highscore;
+  }
 
-  dialog.score.style.display = type === DIALOG_TYPES.WIN.key ? "block" : "none";
-  dialog.score.innerHTML = "Score: " + game.score + "s";
-
-  dialog.highscore.style.display = game.highscore ? "block" : "none";
-  dialog.highscore.innerHTML = "Highscore: " + game.highscore + "s";
-
-  dialog.button.innerHTML = DIALOG_TYPES[type].button;
+  dialog.button.innerHTML = "Play again";
 
   container.style.cursor = "auto";
   dialog.modal.style.display = "block";
@@ -42,34 +29,24 @@ function hideDialog() {
   dialog.modal.style.display = "none";
 }
 
-function showTimeBox() {
-  timeBox.style.display = "block";
-  timeBoxIntervalId = setInterval(() => {
-    timeBox.innerHTML = game.clock.getElapsedTime().toFixed(3) + "s";
-  }, 50);
+function showScoreBox() {
+  scoreBox.style.display = "block";
 }
 
-function hideTimeBox() {
-  timeBox.style.display = "none";
-  clearInterval(timeBoxIntervalId);
+function hideScoreBox() {
+  scoreBox.style.display = "none";
 }
 
 function startGame(dialog) {
   game.start();
   hideDialog();
-  showTimeBox();
+  showScoreBox();
 }
 
-function winGame(dialog) {
+function gameOver(dialog) {
   game.stop();
-  showDialog(DIALOG_TYPES.WIN.key);
-  hideTimeBox();
-}
-
-function loseGame(dialog) {
-  game.stop();
-  showDialog(DIALOG_TYPES.LOSE.key);
-  hideTimeBox();
+  showDialog();
+  hideScoreBox();
 }
 
 function main() {
@@ -81,11 +58,13 @@ function main() {
     highscore: document.getElementById("highscore"),
     button: document.getElementById("play-button"),
   };
-  timeBox = document.getElementById("time-box");
+  scoreBox = document.getElementById("score-box");
 
   game = new Game(container);
-  game.onWin = () => winGame(dialog);
-  game.onLose = () => loseGame(dialog);
+  game.onGameOver = () => gameOver(dialog);
+  game.onScoreUpdated = () => {
+    scoreBox.innerHTML = "Score: " + game.score;
+  };
 
   dialog.button.onclick = () => startGame(dialog);
 }

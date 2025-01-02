@@ -45,11 +45,7 @@ p {
     font-size: 20px;
 }
 
-#score {
-    padding-left: 44px;
-}
-
-#time-box {
+#score-box {
     display: none;
     position: absolute;
     right: 0;

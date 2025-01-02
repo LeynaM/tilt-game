@@ -21,9 +21,9 @@ export class PhysicsLoop {
     clearInterval(this.loop);
   }
 
-  onWin() {}
+  onScore() {}
 
-  onLose() {}
+  onGameOver() {}
 
   physicsTick() {
     const circleGridI = Math.floor(
@@ -42,14 +42,14 @@ export class PhysicsLoop {
       circleGridJ >= this.plane.resolution;
 
     if (circleIsOffPlane) {
-      this.onLose();
+      this.onGameOver();
       return;
     }
 
     if (
       this.plane.tiles[circleGridI][circleGridJ].type === PLATFORM_TYPES.FINISH
     ) {
-      this.onWin();
+      this.onScore();
       return;
     }
 
