@@ -14,7 +14,14 @@ export class Plane {
         };
       }
     }
+    this.resetTiles();
+  }
 
+  resetTiles() {
+    this.tiles.flat().map((tile) => {
+      tile.type = PLATFORM_TYPES.DEFAULT;
+      return tile;
+    });
     const randI = Math.floor(Math.random() * this.resolution);
     const randJ = Math.floor(Math.random() * this.resolution);
     this.tiles[randI][randJ].type = PLATFORM_TYPES.FINISH;
@@ -24,7 +31,7 @@ export class Plane {
   updateFinish() {
     let randI = Math.floor(Math.random() * this.resolution);
     let randJ = Math.floor(Math.random() * this.resolution);
-    while (randI === this.finishCoords.i && randJ === this.finishCoords.j) {
+    while (this.tiles[randI][randJ].type != PLATFORM_TYPES.DEFAULT) {
       randI = Math.floor(Math.random() * this.resolution);
       randJ = Math.floor(Math.random() * this.resolution);
     }
@@ -32,5 +39,19 @@ export class Plane {
       PLATFORM_TYPES.DEFAULT;
     this.tiles[randI][randJ].type = PLATFORM_TYPES.FINISH;
     this.finishCoords = { i: randI, j: randJ };
+  }
+
+  addHoles(cutoff) {
+    this.tiles.map((array) => {
+      return array.map((t) => {
+        if (t.type === PLATFORM_TYPES.DEFAULT) {
+          const rand = Math.random();
+          if (rand < cutoff) {
+            t.type = PLATFORM_TYPES.HOLE;
+          }
+        }
+        return t;
+      });
+    });
   }
 }

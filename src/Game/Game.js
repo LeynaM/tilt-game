@@ -22,6 +22,7 @@ export class Game {
       this.plane,
     );
     this.physicsLoop.onScore = () => {
+      this.plane.addHoles(0.05);
       this.plane.updateFinish();
       this.score++;
       this.onScoreUpdated();
@@ -57,6 +58,7 @@ export class Game {
   resetState() {
     this.score = 0;
     this.isNewHighscore = false;
+    this.plane.resetTiles();
 
     this.tiltAngles.x = 0;
     this.tiltAngles.z = 0;

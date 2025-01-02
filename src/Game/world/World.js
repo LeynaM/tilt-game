@@ -75,10 +75,16 @@ export class World {
         platform.position.z = platformPosition.z;
 
         if (this.plane.tiles[i][j].type === PLATFORM_TYPES.FINISH) {
+          platform.visible = true;
           platform.material.color = new Color(PLATFORM_COLORS.FINISH);
         }
         if (this.plane.tiles[i][j].type === PLATFORM_TYPES.DEFAULT) {
+          platform.visible = true;
           platform.material.color = new Color(PLATFORM_COLORS.DEFAULT);
+        }
+
+        if (this.plane.tiles[i][j].type === PLATFORM_TYPES.HOLE) {
+          platform.visible = false;
         }
       }
     }

@@ -41,7 +41,10 @@ export class PhysicsLoop {
       circleGridJ < 0 ||
       circleGridJ >= this.plane.resolution;
 
-    if (circleIsOffPlane) {
+    if (
+      circleIsOffPlane ||
+      this.plane.tiles[circleGridI][circleGridJ].type === PLATFORM_TYPES.HOLE
+    ) {
       this.onGameOver();
       return;
     }
