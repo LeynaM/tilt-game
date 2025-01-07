@@ -41,17 +41,22 @@ export class Game {
       this.plane,
     );
 
-    this.container.addEventListener("mousemove", this.tiltEventListener);
-    this.container.addEventListener("touchmove", this.tiltEventListener);
-  }
-
-  tiltEventListener(event) {
-    this.tiltAngles.x =
-      ((event.clientY / this.container.clientHeight) * Math.PI) / 2 -
-      Math.PI / 4;
-    this.tiltAngles.z =
-      ((event.clientX / this.container.clientWidth) * Math.PI) / 2 -
-      Math.PI / 4;
+    this.container.addEventListener("mousemove", (event) => {
+      this.tiltAngles.x =
+        ((event.clientY / event.currentTarget.clientHeight) * Math.PI) / 2 -
+        Math.PI / 4;
+      this.tiltAngles.z =
+        ((event.clientX / event.currentTarget.clientWidth) * Math.PI) / 2 -
+        Math.PI / 4;
+    });
+    this.container.addEventListener("touchmove", (event) => {
+      this.tiltAngles.x =
+        ((event.clientY / event.currentTarget.clientHeight) * Math.PI) / 2 -
+        Math.PI / 4;
+      this.tiltAngles.z =
+        ((event.clientX / event.currentTarget.clientWidth) * Math.PI) / 2 -
+        Math.PI / 4;
+    });
   }
 
   resetState() {
