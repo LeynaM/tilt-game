@@ -1,5 +1,5 @@
 export default {
-  base: "/Tilt/",
+  base: "/tilt-game/",
   build: {
     outDir: "dist",
   },
