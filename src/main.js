@@ -40,6 +40,7 @@ function hideScoreBox() {
 function startGame(dialog) {
   game.start();
   hideDialog();
+  dialog.text.style.display = "none";
   showScoreBox();
 }
 
@@ -57,6 +58,7 @@ function main() {
     score: document.getElementById("score"),
     highscore: document.getElementById("highscore"),
     button: document.getElementById("play-button"),
+    text: document.getElementById("start-text"),
   };
   scoreBox = document.getElementById("score-box");
 
