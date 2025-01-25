@@ -2,7 +2,8 @@ import { positionOnPlaneTo3D } from "/src/utils/utils";
 import { PLATFORM_TYPES } from "/src/constants/constants";
 
 const PHYSICS_DELTA = 0.05;
-const GRAVITY = 2;
+const GRAVITY = 4;
+const FRICTION_COEFF = 1;
 
 export class PhysicsLoop {
   constructor(tiltAngles, circle, plane) {
@@ -56,13 +57,20 @@ export class PhysicsLoop {
       return;
     }
 
-    this.circle.acceleration.x = GRAVITY * Math.sin(this.tiltAngles.z);
+    const friction = this.circle.velocity
+      .clone()
+      .normalize()
+      .multiplyScalar(-1 * FRICTION_COEFF);
+
+    this.circle.acceleration.x =
+      GRAVITY * Math.sin(this.tiltAngles.z) + friction.x;
     this.circle.velocity.x =
       this.circle.velocity.x + this.circle.acceleration.x * PHYSICS_DELTA;
     this.circle.centre.x =
       this.circle.centre.x + this.circle.velocity.x * PHYSICS_DELTA;
 
-    this.circle.acceleration.y = -GRAVITY * Math.sin(this.tiltAngles.x);
+    this.circle.acceleration.y =
+      -GRAVITY * Math.sin(this.tiltAngles.x) + friction.y;
     this.circle.velocity.y =
       this.circle.velocity.y + this.circle.acceleration.y * PHYSICS_DELTA;
     this.circle.centre.y =
