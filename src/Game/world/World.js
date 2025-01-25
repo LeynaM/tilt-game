@@ -90,7 +90,7 @@ export class World {
     }
 
     const ballPosition = positionOnPlaneTo3D(
-      new Vector3(this.circle.centre.x, this.circle.centre.y, -0.2),
+      new Vector3(this.circle.centre.x, this.circle.centre.y, -0.3), //z coord is - (half platform thickness + ball radius)
       this.tiltAngles,
     );
     this.ball.position.x = ballPosition.x;

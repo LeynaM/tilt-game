@@ -9,7 +9,7 @@ export function createPlatforms(plane) {
     for (let j = 0; j < plane.resolution; j++) {
       const geometry = new BoxGeometry(
         plane.size / plane.resolution,
-        0.1,
+        0.2,
         plane.size / plane.resolution,
       );
       const material = new MeshStandardMaterial({
