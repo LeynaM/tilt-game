@@ -37,7 +37,7 @@ function StartGameDialog({ onStart }) {
             </Link>
           </Dialog.Description>
           <Flex justify="center">
-            <Button onClick={() => start()} size="3">
+            <Button onClick={start} size="3">
               Play
             </Button>
           </Flex>

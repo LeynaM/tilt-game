@@ -1,23 +1,35 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import { Flex, Text, Button } from "@radix-ui/themes";
+import { useRef } from "react";
 import { Game } from "./Game/Game";
 import StartGameDialog from "./components/StartGameDialog/StartGameDialog";
-
-let game;
+import { ScoreComponent } from "./components/ScoreComponent/ScoreComponent";
+import { useState } from "react";
+import { useEffect } from "react";
 
 function App() {
   const gameContainer = document.getElementById("game-container");
-  if (!game) {
-    game = new Game(gameContainer);
-  }
+  let game = useRef(null);
+  const [score, setScore] = useState(0);
+  const [isScoreVisible, setIsScoreVisible] = useState(false);
 
-  const startGame = () => game.start();
+  useEffect(() => {
+    if (!game.current) {
+      game.current = new Game(gameContainer);
+      game.current.onScoreUpdated = () => {
+        setScore(game.current.score);
+      };
+    }
+  });
+
+  const startGame = () => {
+    game.current.start();
+    gameContainer.style.cursor = "none";
+    setIsScoreVisible(true);
+  };
 
   return (
     <>
       <StartGameDialog onStart={startGame} />
+      {isScoreVisible && <ScoreComponent score={score} />}
     </>
   );
 }
