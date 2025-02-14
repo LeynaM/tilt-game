@@ -5,16 +5,22 @@ export async function fetchAllScores() {
   }
 
   const scores = await res.json();
-  console.log(res, scores);
   return scores;
 }
 
 export async function saveScore(payload) {
-  await fetch("http://localhost:3000/api/scores", {
+  const res = await fetch("http://localhost:3000/api/scores", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
   });
+
+  if (!res.ok) {
+    throw new Error(`Failed to add new score: ${res.statusText}`);
+  }
+
+  const score = await res.json();
+  return score;
 }

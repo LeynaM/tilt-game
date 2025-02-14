@@ -1,26 +1,33 @@
 import { Dialog, Button, Flex, Text, Spinner } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { fetchAllScores, saveScore } from "../../utils/utils";
+import { ScoreTable } from "../ScoreTable/ScoreTable";
 
 function GameOverDialog({ open, onStart, score }) {
   const [allScores, setAllScores] = useState([]);
+  const [newScore, setNewScores] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (open) {
+  const saveScoreAndFetchScores = async () => {
+    try {
       setLoading(true);
       setError(null);
-      saveScore({ player: "test", score })
-        .then(() =>
-          fetchAllScores()
-            .then((data) => setAllScores(data))
-            .catch((err) => {
-              console.log(err);
-              setError("Failed to load scores");
-            }),
-        )
-        .finally(() => setLoading(false));
+
+      const ns = await saveScore({ player: "test", score });
+      setNewScores(ns);
+      const scores = await fetchAllScores();
+      setAllScores(scores);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (open) {
+      saveScoreAndFetchScores();
     }
   }, [open]);
 
@@ -35,19 +42,13 @@ function GameOverDialog({ open, onStart, score }) {
           <Dialog.Title size="8" align="center" mb="0">
             Game Over!
           </Dialog.Title>
-          <Text>Score: {score}</Text>
 
           {loading && <Spinner />}
           {error && <Text color="red">{error}</Text>}
 
           {!loading && !error && (
             <Flex direction="column" gap="2">
-              <Text>Top Scores:</Text>
-              {allScores.map((s) => (
-                <Text key={s.id}>
-                  {s.player}: {s.score}
-                </Text>
-              ))}
+              <ScoreTable scores={allScores} newScoreId={newScore?.id} />
             </Flex>
           )}
 
