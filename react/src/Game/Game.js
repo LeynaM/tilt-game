@@ -32,6 +32,7 @@ export class Game {
         this.highscore = this.score;
         this.isNewHighscore = true;
       }
+      this.stop();
       this.onGameOver();
     };
     this.world = new World(
