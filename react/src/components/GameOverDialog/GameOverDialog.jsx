@@ -1,4 +1,4 @@
-import { Dialog, Button, Flex, Text, Spinner } from "@radix-ui/themes";
+import { Dialog, Button, Flex, Text, Box, Skeleton } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { fetchAllScores, saveScore } from "../../utils/utils";
 import { ScoreTable } from "../ScoreTable/ScoreTable";
@@ -18,8 +18,8 @@ function GameOverDialog({ open, onStart, score }) {
       setNewScores(res.score);
       const scores = await fetchAllScores();
       setAllScores(scores);
-    } catch (error) {
-      setError(error);
+    } catch {
+      setError("Something went wrong. Please refresh the page and try again.");
     } finally {
       setLoading(false);
     }
@@ -40,22 +40,38 @@ function GameOverDialog({ open, onStart, score }) {
       >
         <Flex p="4" gap="6" direction="column">
           <Dialog.Title size="8" align="center" mb="0">
-            Game Over!
+            <Skeleton loading={loading}>
+              {(() => {
+                if (error) {
+                  return "Error!";
+                }
+                if (allScores[0]?.id === newScore?.id) {
+                  return "New Highscore!";
+                }
+                return "Game Over!";
+              })()}
+            </Skeleton>
           </Dialog.Title>
 
-          {loading && <Spinner />}
-          {error && <Text color="red">{error}</Text>}
-
-          {!loading && !error && (
-            <Flex direction="column" gap="2">
-              <ScoreTable scores={allScores} newScoreId={newScore?.id} />
-            </Flex>
-          )}
+          <Skeleton loading={loading} minHeight={"176px"}>
+            {error ? (
+              <Text color="red">{error}</Text>
+            ) : (
+              <Box>
+                <ScoreTable scores={allScores} newScoreId={newScore?.id} />
+              </Box>
+            )}
+          </Skeleton>
 
           <Flex justify="center">
-            <Button onClick={onStart} size="3">
-              Play again
-            </Button>
+            <Skeleton loading={loading}>
+              <Button
+                onClick={error ? () => window.location.reload() : onStart}
+                size="3"
+              >
+                {error ? "Refresh page" : "Play again"}
+              </Button>
+            </Skeleton>
           </Flex>
         </Flex>
       </Dialog.Content>
