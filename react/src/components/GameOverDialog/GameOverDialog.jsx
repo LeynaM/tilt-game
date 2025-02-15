@@ -1,9 +1,9 @@
 import { Dialog, Button, Flex, Text, Box, Skeleton } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
-import { fetchAllScores, saveScore } from "../../utils/utils";
+import { fetchAllScores, saveScore } from "../../api/api";
 import { ScoreTable } from "../ScoreTable/ScoreTable";
 
-function GameOverDialog({ open, onStart, score }) {
+function GameOverDialog({ open, onStart, score, name }) {
   const [allScores, setAllScores] = useState([]);
   const [newScore, setNewScores] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ function GameOverDialog({ open, onStart, score }) {
       setLoading(true);
       setError(null);
 
-      const res = await saveScore({ player: "test", score });
+      const res = await saveScore({ player: name, score });
       setNewScores(res.score);
       const scores = await fetchAllScores();
       setAllScores(scores);

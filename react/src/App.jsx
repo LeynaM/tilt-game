@@ -5,12 +5,13 @@ import { ScoreComponent } from "./components/ScoreComponent/ScoreComponent";
 import { useState } from "react";
 import { useEffect } from "react";
 import GameOverDialog from "./components/GameOverDialog/GameOverDialog";
-import { fetchAllScores, saveScore } from "./utils/utils";
+import { generateName } from "./utils/utils";
 
 function App() {
   const gameContainer = document.getElementById("game-container");
   let game = useRef(null);
   const [score, setScore] = useState(0);
+  const [name, setName] = useState(0);
   const [isScoreVisible, setIsScoreVisible] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
 
@@ -24,6 +25,8 @@ function App() {
         setIsGameOver(true);
         setIsScoreVisible(false);
       };
+
+      setName(generateName());
     }
   });
 
@@ -37,7 +40,12 @@ function App() {
   return (
     <>
       <StartGameDialog onStart={startGame} />
-      <GameOverDialog open={isGameOver} onStart={startGame} score={score} />
+      <GameOverDialog
+        open={isGameOver}
+        onStart={startGame}
+        score={score}
+        name={name}
+      />
       {isScoreVisible && <ScoreComponent score={score} />}
     </>
   );
