@@ -1,8 +1,8 @@
-import { Dialog, Button, Flex, Link } from "@radix-ui/themes";
+import { Dialog, Button, Flex, Link, TextField, Text } from "@radix-ui/themes";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
-function StartGameDialog({ onStart }) {
+function StartGameDialog({ onStart, name, setName }) {
   const [open, setOpen] = useState(true);
 
   const overrideClose = () => {
@@ -36,8 +36,21 @@ function StartGameDialog({ onStart }) {
               Code available on GitHub. <ExternalLinkIcon />
             </Link>
           </Dialog.Description>
+          <Flex justify="center" align="center" gap="2">
+            <Text>Name:</Text>
+            <TextField.Root
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onBlur={() => setName(name.trim())}
+            />
+          </Flex>
           <Flex justify="center">
-            <Button onClick={start} size="3">
+            <Button
+              disabled={name.trim().length === 0}
+              onClick={start}
+              size="3"
+            >
               Play
             </Button>
           </Flex>

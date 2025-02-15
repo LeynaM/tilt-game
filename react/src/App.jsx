@@ -11,7 +11,7 @@ function App() {
   const gameContainer = document.getElementById("game-container");
   let game = useRef(null);
   const [score, setScore] = useState(0);
-  const [name, setName] = useState(0);
+  const [name, setName] = useState(generateName());
   const [isScoreVisible, setIsScoreVisible] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
 
@@ -25,8 +25,6 @@ function App() {
         setIsGameOver(true);
         setIsScoreVisible(false);
       };
-
-      setName(generateName());
     }
   });
 
@@ -39,7 +37,7 @@ function App() {
 
   return (
     <>
-      <StartGameDialog onStart={startGame} />
+      <StartGameDialog onStart={startGame} name={name} setName={setName} />
       <GameOverDialog
         open={isGameOver}
         onStart={startGame}
