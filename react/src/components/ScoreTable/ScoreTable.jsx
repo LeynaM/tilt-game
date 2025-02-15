@@ -4,11 +4,10 @@ import { useState } from "react";
 import "./ScoreTable.css";
 
 function ScoreTable({ scores, newScoreId }) {
-  const [topFive, setTopFive] = useState([]);
+  const [index, setIndex] = useState(false);
 
   useEffect(() => {
-    const sorted = scores.toSorted((a, b) => b.score - a.score);
-    setTopFive(sorted.slice(0, 5));
+    setIndex(scores.findIndex((s) => s.id === newScoreId));
   }, [scores]);
 
   return (
@@ -22,16 +21,52 @@ function ScoreTable({ scores, newScoreId }) {
       </Table.Header>
 
       <Table.Body>
-        {topFive.map((s, index) => (
+        {scores.slice(0, 3).map((s) => (
           <Table.Row
             key={s.id}
             className={s.id === newScoreId ? "highlight-row" : ""}
           >
-            <Table.Cell> {index + 1} </Table.Cell>
+            <Table.Cell> {s.rank} </Table.Cell>
             <Table.Cell> {s.player} </Table.Cell>
             <Table.Cell> {s.score} </Table.Cell>
           </Table.Row>
         ))}
+        {index > 4 && (
+          <Table.Row>
+            <Table.Cell>⋮</Table.Cell>
+            <Table.Cell>⋮</Table.Cell>
+            <Table.Cell>⋮</Table.Cell>
+          </Table.Row>
+        )}
+        {index > 3 && (
+          <Table.Row>
+            <Table.Cell> {scores[index - 1].rank}</Table.Cell>
+            <Table.Cell>{scores[index - 1].player}</Table.Cell>
+            <Table.Cell>{scores[index - 1].score}</Table.Cell>
+          </Table.Row>
+        )}
+        {index > 2 && (
+          <Table.Row className="highlight-row">
+            <Table.Cell> {scores[index].rank}</Table.Cell>
+            <Table.Cell>{scores[index].player}</Table.Cell>
+            <Table.Cell>{scores[index].score}</Table.Cell>
+          </Table.Row>
+        )}
+        {index > 2 && scores.length - 1 > index && (
+          <Table.Row>
+            <Table.Cell> {scores[index + 1].rank}</Table.Cell>
+            <Table.Cell>{scores[index + 1].player}</Table.Cell>
+            <Table.Cell>{scores[index + 1].score}</Table.Cell>
+          </Table.Row>
+        )}
+        {((index < 3 && scores.length > 3) ||
+          (index > 2 && scores.length - 2 > index)) && (
+          <Table.Row>
+            <Table.Cell>⋮</Table.Cell>
+            <Table.Cell>⋮</Table.Cell>
+            <Table.Cell>⋮</Table.Cell>
+          </Table.Row>
+        )}
       </Table.Body>
     </Table.Root>
   );

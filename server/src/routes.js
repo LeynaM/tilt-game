@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/libsql";
 import { scoresTable } from "./db/schema.js";
-import { lt, gt, sql } from "drizzle-orm";
+import { lt, gt, sql, asc, desc } from "drizzle-orm";
 
 const db = drizzle(process.env.DATABASE_URL);
 
@@ -10,7 +10,7 @@ export default async function routes(fastify, options) {
     const allScores = await db
       .select()
       .from(scoresTable)
-      .orderBy(scoresTable.createdAt, scoresTable.rank);
+      .orderBy(asc(scoresTable.rank), asc(scoresTable.createdAt));
     return allScores;
   });
 

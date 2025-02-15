@@ -21,6 +21,5 @@ export async function saveScore(payload) {
     throw new Error(`Failed to add new score: ${res.statusText}`);
   }
 
-  const score = await res.json();
-  return score;
+  return await res.json();
 }

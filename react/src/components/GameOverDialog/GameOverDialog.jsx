@@ -14,8 +14,8 @@ function GameOverDialog({ open, onStart, score }) {
       setLoading(true);
       setError(null);
 
-      const ns = await saveScore({ player: "test", score });
-      setNewScores(ns);
+      const res = await saveScore({ player: "test", score });
+      setNewScores(res.score);
       const scores = await fetchAllScores();
       setAllScores(scores);
     } catch (error) {
