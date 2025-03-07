@@ -23,17 +23,16 @@ export class Game {
     );
     this.physicsLoop.onScore = () => {
       this.plane.addHoles(0.05);
-      this.plane.updateFinish();
+      const hasUpdatedFinish = this.plane.updateFinish();
       this.score++;
       this.onScoreUpdated();
+
+      if (!hasUpdatedFinish) {
+        this.gameOver();
+      }
     };
     this.physicsLoop.onGameOver = () => {
-      if (this.score > this.highscore) {
-        this.highscore = this.score;
-        this.isNewHighscore = true;
-      }
-      this.stop();
-      this.onGameOver();
+      this.gameOver();
     };
     this.world = new World(
       this.container,
@@ -80,6 +79,18 @@ export class Game {
     this.onScoreUpdated();
   }
 
+  gameOver() {
+    if (this.score > this.highscore) {
+      this.highscore = this.score;
+      this.isNewHighscore = true;
+    }
+    this.world.animationTick();
+    this.world.render();
+    this.stop();
+    setTimeout(() => {
+      this.onGameOver();
+    }, 1000);
+  }
   stop() {
     this.physicsLoop.stop();
     this.world.stopAnimationLoop();
