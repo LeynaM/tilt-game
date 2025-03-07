@@ -6,11 +6,11 @@ import { createRenderer } from "./systems/renderer.js";
 import { Resizer } from "./systems/Resizer.js";
 import { createLights } from "./components/lights.js";
 import { Vector3, Color } from "three";
-import { PLATFORM_TYPES, PLATFORM_COLORS } from "/src/constants/constants.js";
+import { PLATFORM_TYPES, PLATFORM_COLORS } from "../constants/constants.js";
 import {
   get3DPlatformPositionfromGridCoords,
   positionOnPlaneTo3D,
-} from "/src/utils/utils.js";
+} from "../utils/utils.js";
 
 export class World {
   constructor(container, tiltAngles, circle, plane) {
@@ -20,7 +20,7 @@ export class World {
 
     this.platforms = createPlatforms(this.plane);
     this.ball = createBall();
-    this.camera = createCamera();
+    this.camera = createCamera(container);
     this.scene = createScene();
     this.renderer = createRenderer();
     this.lights = createLights();
@@ -35,6 +35,7 @@ export class World {
   }
 
   render() {
+    console.log("render");
     this.renderer.render(this.scene, this.camera);
   }
 

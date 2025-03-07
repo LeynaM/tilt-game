@@ -1,6 +1,6 @@
 import { BoxGeometry, Mesh, MeshStandardMaterial } from "three";
-import { get3DPlatformPositionfromGridCoords } from "/src/utils/utils";
-import { PLATFORM_COLORS } from "/src/constants/constants.js";
+import { get3DPlatformPositionfromGridCoords } from "../../utils/utils";
+import { PLATFORM_COLORS } from "../../constants/constants.js";
 
 export function createPlatforms(plane) {
   const platforms = new Array(plane.resolution);

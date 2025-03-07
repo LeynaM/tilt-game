@@ -1,5 +1,5 @@
-import { positionOnPlaneTo3D } from "/src/utils/utils";
-import { PLATFORM_TYPES } from "/src/constants/constants";
+import { positionOnPlaneTo3D } from "../utils/utils";
+import { PLATFORM_TYPES } from "../constants/constants";
 
 const PHYSICS_DELTA = 0.05;
 const GRAVITY = 4;

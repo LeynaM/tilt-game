@@ -1,6 +1,6 @@
 import { PerspectiveCamera } from "three";
 
-function createCamera() {
+function createCamera(container) {
   const camera = new PerspectiveCamera(
     75,
     container.clientWidth / container.clientHeight,

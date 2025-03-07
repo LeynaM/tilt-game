@@ -1,4 +1,4 @@
-import { PLATFORM_TYPES } from "/src/constants/constants.js";
+import { PLATFORM_TYPES } from "../constants/constants.js";
 
 export class Plane {
   constructor(size, resolution) {
