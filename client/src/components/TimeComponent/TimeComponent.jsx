@@ -1,18 +1,7 @@
 import { Callout, Portal, Theme } from "@radix-ui/themes";
 import { useEffect, useState, useRef } from "react";
 import styles from "./TimeComponent.module.css";
-
-function formatElapsedTime(elapsedTime) {
-  const minutes = Math.floor(elapsedTime / 60000);
-  const seconds = Math.floor((elapsedTime % 60000) / 1000);
-  const milliseconds = Math.floor((elapsedTime % 1000) / 100);
-
-  const formattedMinutes = String(minutes).padStart(2, "0");
-  const formattedSeconds = String(seconds).padStart(2, "0");
-  const formattedMilliseconds = String(milliseconds);
-
-  return `${formattedMinutes}:${formattedSeconds}.${formattedMilliseconds}`;
-}
+import { formatElapsedTime } from "../../utils/utils";
 
 function TimeComponent({ startTime, finishTime }) {
   const [elapsedTime, setElapsedTime] = useState(null);

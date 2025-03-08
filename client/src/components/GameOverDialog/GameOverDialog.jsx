@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { fetchAllScores, saveScore } from "../../api/api";
 import { ScoreTable } from "../ScoreTable/ScoreTable";
 
-function GameOverDialog({ open, onStart, score, name }) {
+function GameOverDialog({ open, onStart, score, name, time }) {
   const [allScores, setAllScores] = useState([]);
   const [newScore, setNewScores] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ function GameOverDialog({ open, onStart, score, name }) {
       setLoading(true);
       setError(null);
 
-      const res = await saveScore({ player: name, score });
+      const res = await saveScore({ player: name, score, time });
       setNewScores(res.score);
       const scores = await fetchAllScores();
       setAllScores(scores);

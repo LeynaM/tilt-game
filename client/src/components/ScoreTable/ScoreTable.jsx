@@ -1,7 +1,7 @@
 import { Table } from "@radix-ui/themes";
 import { useEffect } from "react";
 import { useState } from "react";
-import "./ScoreTable.css";
+import { TableRow } from "./TableRow/TableRow";
 
 function ScoreTable({ scores, newScoreId }) {
   const [index, setIndex] = useState(false);
@@ -17,51 +17,31 @@ function ScoreTable({ scores, newScoreId }) {
           <Table.ColumnHeaderCell>Rank</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Score</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>Time</Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
 
       <Table.Body>
         {scores.slice(0, 3).map((s) => (
-          <Table.Row
-            key={s.id}
-            className={s.id === newScoreId ? "highlight-row" : ""}
-          >
-            <Table.Cell> {s.rank} </Table.Cell>
-            <Table.Cell> {s.player} </Table.Cell>
-            <Table.Cell> {s.score} </Table.Cell>
-          </Table.Row>
+          <TableRow key={s.id} highlight={s.id === newScoreId} row={s} />
         ))}
         {index > 4 && (
           <Table.Row>
             <Table.Cell>⋮</Table.Cell>
             <Table.Cell>⋮</Table.Cell>
             <Table.Cell>⋮</Table.Cell>
+            <Table.Cell>⋮</Table.Cell>
           </Table.Row>
         )}
-        {index > 3 && (
-          <Table.Row>
-            <Table.Cell> {scores[index - 1].rank}</Table.Cell>
-            <Table.Cell>{scores[index - 1].player}</Table.Cell>
-            <Table.Cell>{scores[index - 1].score}</Table.Cell>
-          </Table.Row>
-        )}
-        {index > 2 && (
-          <Table.Row className="highlight-row">
-            <Table.Cell> {scores[index].rank}</Table.Cell>
-            <Table.Cell>{scores[index].player}</Table.Cell>
-            <Table.Cell>{scores[index].score}</Table.Cell>
-          </Table.Row>
-        )}
+        {index > 3 && <TableRow row={scores[index - 1]} />}
+        {index > 2 && <TableRow highlight={true} row={scores[index]} />}
         {index > 2 && scores.length - 1 > index && (
-          <Table.Row>
-            <Table.Cell> {scores[index + 1].rank}</Table.Cell>
-            <Table.Cell>{scores[index + 1].player}</Table.Cell>
-            <Table.Cell>{scores[index + 1].score}</Table.Cell>
-          </Table.Row>
+          <TableRow row={scores[index + 1]} />
         )}
         {((index < 3 && scores.length > 3) ||
           (index > 2 && scores.length - 2 > index)) && (
           <Table.Row>
+            <Table.Cell>⋮</Table.Cell>
             <Table.Cell>⋮</Table.Cell>
             <Table.Cell>⋮</Table.Cell>
             <Table.Cell>⋮</Table.Cell>

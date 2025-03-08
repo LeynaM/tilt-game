@@ -61,6 +61,7 @@ function App() {
         onStart={startGame}
         score={score}
         name={name}
+        time={finishTime - startTime}
       />
       {isGameRunning && <ScoreComponent score={score} />}
       {isGameRunning && (

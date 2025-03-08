@@ -202,3 +202,15 @@ const animals = [
 export function generateName() {
   return `${colors[Math.floor(Math.random() * colors.length)]} ${animals[Math.floor(Math.random() * animals.length)]}`;
 }
+
+export function formatElapsedTime(elapsedTime) {
+  const minutes = Math.floor(elapsedTime / 60000);
+  const seconds = Math.floor((elapsedTime % 60000) / 1000);
+  const milliseconds = Math.floor((elapsedTime % 1000) / 100);
+
+  const formattedMinutes = String(minutes).padStart(2, "0");
+  const formattedSeconds = String(seconds).padStart(2, "0");
+  const formattedMilliseconds = String(milliseconds);
+
+  return `${formattedMinutes}:${formattedSeconds}.${formattedMilliseconds}`;
+}

@@ -6,5 +6,6 @@ export const scoresTable = sqliteTable("scores_table", {
   rank: integer().notNull(),
   player: text().notNull(),
   score: integer().notNull(),
+  time: integer().notNull(),
   createdAt: integer().default(sql`(strftime('%s', 'now'))`),
 });
