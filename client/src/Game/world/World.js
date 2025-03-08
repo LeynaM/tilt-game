@@ -35,7 +35,6 @@ export class World {
   }
 
   render() {
-    console.log("render");
     this.renderer.render(this.scene, this.camera);
   }
 

@@ -12,6 +12,9 @@ export class Game {
     this.highscore = 0;
     this.isNewHighscore;
 
+    this.startTime;
+    this.finishTime;
+
     this.plane = new Plane(6, 16);
     this.circle = new Circle(0.2, new Vector2(0, 0));
     this.tiltAngles = { x: 0, z: 0 };
@@ -69,9 +72,12 @@ export class Game {
     this.physicsLoop.start();
     this.world.startAnimationLoop();
     this.onScoreUpdated();
+    this.finishTime = null;
+    this.startTime = Date.now();
   }
 
   gameEnd({ hasWon }) {
+    this.finishTime = Date.now();
     if (this.score > this.highscore) {
       this.highscore = this.score;
       this.isNewHighscore = true;

@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Game } from "./Game/Game";
 import StartGameDialog from "./components/StartGameDialog/StartGameDialog";
 import { ScoreComponent } from "./components/ScoreComponent/ScoreComponent";
+import { TimeComponent } from "./components/TimeComponent/TimeComponent";
 import { useState } from "react";
 import { useEffect } from "react";
 import GameOverDialog from "./components/GameOverDialog/GameOverDialog";
@@ -12,8 +13,10 @@ function App() {
   const gameContainer = document.getElementById("game-container");
   let game = useRef(null);
   const [score, setScore] = useState(0);
+  const [startTime, setStartTime] = useState(null);
+  const [finishTime, setFinishTime] = useState(null);
   const [name, setName] = useState(generateName());
-  const [isScoreVisible, setIsScoreVisible] = useState(false);
+  const [isGameRunning, setIsGameRunning] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
 
   useEffect(() => {
@@ -30,11 +33,12 @@ function App() {
             origin: { y: 0.5 },
           });
         }
+        setFinishTime(game.current.finishTime);
 
         setTimeout(() => {
           document.body.style.cursor = "auto";
           setIsGameOver(true);
-          setIsScoreVisible(false);
+          setIsGameRunning(false);
         }, 1000);
       };
     }
@@ -42,8 +46,10 @@ function App() {
 
   const startGame = () => {
     game.current.start();
+    setStartTime(game.current.startTime);
+    setFinishTime(null);
     document.body.style.cursor = "none";
-    setIsScoreVisible(true);
+    setIsGameRunning(true);
     setIsGameOver(false);
   };
 
@@ -56,7 +62,10 @@ function App() {
         score={score}
         name={name}
       />
-      {isScoreVisible && <ScoreComponent score={score} />}
+      {isGameRunning && <ScoreComponent score={score} />}
+      {isGameRunning && (
+        <TimeComponent startTime={startTime} finishTime={finishTime} />
+      )}
     </>
   );
 }

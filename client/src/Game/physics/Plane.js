@@ -91,14 +91,12 @@ export class Plane {
   updateFinish() {
     const allowedFinishes = this.getAllowedFinishes();
     if (allowedFinishes.length === 0) {
-      console.log("no allowed finishes");
       return false;
     }
 
     if (allowedFinishes.length === 1) {
       this.tiles[allowedFinishes[0].i][allowedFinishes[0].j].type =
         PLATFORM_TYPES.HOLE;
-      console.log("only one");
       return false;
     }
 

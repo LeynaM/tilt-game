@@ -7,8 +7,8 @@ function createLights() {
   const sideLight = new DirectionalLight("white", 2);
   sideLight.position.set(10, -10, 10);
   sideLight.castShadow = true;
-  sideLight.shadow.mapSize.x = 720;
-  sideLight.shadow.mapSize.y = 720;
+  sideLight.shadow.mapSize.x = 512;
+  sideLight.shadow.mapSize.y = 512;
 
   return [light, sideLight];
 }
