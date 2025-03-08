@@ -28,11 +28,11 @@ export class Game {
       this.onScoreUpdated();
 
       if (!hasUpdatedFinish) {
-        this.gameOver();
+        this.gameEnd({ hasWon: true });
       }
     };
     this.physicsLoop.onGameOver = () => {
-      this.gameOver();
+      this.gameEnd({ hasWon: false });
     };
     this.world = new World(
       this.container,
@@ -41,20 +41,12 @@ export class Game {
       this.plane,
     );
 
-    this.container.addEventListener("mousemove", (event) => {
+    window.addEventListener("mousemove", (event) => {
       this.tiltAngles.x =
-        ((event.clientY / event.currentTarget.clientHeight) * Math.PI) / 2 -
+        ((event.clientY / this.container.clientHeight) * Math.PI) / 2 -
         Math.PI / 4;
       this.tiltAngles.z =
-        ((event.clientX / event.currentTarget.clientWidth) * Math.PI) / 2 -
-        Math.PI / 4;
-    });
-    this.container.addEventListener("touchmove", (event) => {
-      this.tiltAngles.x =
-        ((event.clientY / event.currentTarget.clientHeight) * Math.PI) / 2 -
-        Math.PI / 4;
-      this.tiltAngles.z =
-        ((event.clientX / event.currentTarget.clientWidth) * Math.PI) / 2 -
+        ((event.clientX / this.container.clientWidth) * Math.PI) / 2 -
         Math.PI / 4;
     });
   }
@@ -79,7 +71,7 @@ export class Game {
     this.onScoreUpdated();
   }
 
-  gameOver() {
+  gameEnd({ hasWon }) {
     if (this.score > this.highscore) {
       this.highscore = this.score;
       this.isNewHighscore = true;
@@ -87,10 +79,9 @@ export class Game {
     this.world.animationTick();
     this.world.render();
     this.stop();
-    setTimeout(() => {
-      this.onGameOver();
-    }, 1000);
+    this.onGameOver({ hasWon });
   }
+
   stop() {
     this.physicsLoop.stop();
     this.world.stopAnimationLoop();

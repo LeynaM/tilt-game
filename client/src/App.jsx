@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import GameOverDialog from "./components/GameOverDialog/GameOverDialog";
 import { generateName } from "./utils/utils";
+import { confetti } from "@tsparticles/confetti";
 
 function App() {
   const gameContainer = document.getElementById("game-container");
@@ -21,16 +22,27 @@ function App() {
       game.current.onScoreUpdated = () => {
         setScore(game.current.score);
       };
-      game.current.onGameOver = async () => {
-        setIsGameOver(true);
-        setIsScoreVisible(false);
+      game.current.onGameOver = async ({ hasWon }) => {
+        if (hasWon) {
+          confetti({
+            particleCount: 50,
+            spread: 360,
+            origin: { y: 0.5 },
+          });
+        }
+
+        setTimeout(() => {
+          document.body.style.cursor = "auto";
+          setIsGameOver(true);
+          setIsScoreVisible(false);
+        }, 1000);
       };
     }
   });
 
   const startGame = () => {
     game.current.start();
-    gameContainer.style.cursor = "none";
+    document.body.style.cursor = "none";
     setIsScoreVisible(true);
     setIsGameOver(false);
   };
