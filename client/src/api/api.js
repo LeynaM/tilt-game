@@ -1,5 +1,5 @@
 export async function fetchAllScores() {
-  const res = await fetch("http://localhost:3000/api/scores");
+  const res = await fetch("/api/scores");
   if (!res.ok) {
     throw new Error(`Failed to fetch scores: ${res.statusText}`);
   }
@@ -9,7 +9,7 @@ export async function fetchAllScores() {
 }
 
 export async function saveScore(payload) {
-  const res = await fetch("http://localhost:3000/api/scores", {
+  const res = await fetch("/api/scores", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
