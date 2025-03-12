@@ -10,7 +10,11 @@ const __dirname = path.dirname(__filename);
 
 const fastify = Fastify({ logger: true });
 
-fastify.register(cors);
+fastify.register(cors, {
+  origin: ["https://tilt.leynamay.com", "http://localhost:3000"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+});
 fastify.register(fastifyStatic, {
   root: path.join(__dirname, "../../client/dist"),
   prefix: "/",
