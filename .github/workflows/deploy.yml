@@ -20,13 +20,12 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            source ~/.bashrc
             cd dev/tilt-game
             git pull origin main
             cd client
-            npm install
-            npm run build
+            /home/ubuntu/.volta/bin/npm install
+            /home/ubuntu/.volta/bin/npm run build
             cd ../server
-            npm install
+            /home/ubuntu/.volta/bin/npm install
             cd ..
-            pm2 restart tilt-game
+            /home/ubuntu/.volta/bin/pm2 restart tilt-game
