@@ -21,7 +21,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd dev/tilt-game
-            git pull origin main
+            git fetch --all
+            git reset --hard origin/main
             cd client
             /home/ubuntu/.volta/bin/npm install
             /home/ubuntu/.volta/bin/npm run build
