@@ -5,8 +5,9 @@ import { createScene } from "./components/scene.js";
 import { createRenderer } from "./systems/renderer.js";
 import { Resizer } from "./systems/Resizer.js";
 import { createLights } from "./components/lights.js";
-import { Vector3, Color } from "three";
-import { PLATFORM_TYPES, PLATFORM_COLORS } from "../constants/constants.js";
+import { Vector3 } from "three";
+import { createMaterials } from "./components/materials.js";
+import { PLATFORM_TYPES } from "../constants/constants.js";
 import {
   get3DPlatformPositionfromGridCoords,
   positionOnPlaneTo3D,
@@ -17,8 +18,8 @@ export class World {
     this.tiltAngles = tiltAngles;
     this.circle = circle;
     this.plane = plane;
-
-    this.platforms = createPlatforms(this.plane);
+    this.materials = createMaterials();
+    this.platforms = createPlatforms(this.plane, this.materials);
     this.ball = createBall();
     this.camera = createCamera(container);
     this.scene = createScene();
@@ -74,17 +75,11 @@ export class World {
         platform.position.y = platformPosition.y;
         platform.position.z = platformPosition.z;
 
-        if (this.plane.tiles[i][j].type === PLATFORM_TYPES.FINISH) {
-          platform.visible = true;
-          platform.material.color = new Color(PLATFORM_COLORS.FINISH);
-        }
-        if (this.plane.tiles[i][j].type === PLATFORM_TYPES.DEFAULT) {
-          platform.visible = true;
-          platform.material.color = new Color(PLATFORM_COLORS.DEFAULT);
-        }
-
         if (this.plane.tiles[i][j].type === PLATFORM_TYPES.HOLE) {
           platform.visible = false;
+        } else {
+          platform.visible = true;
+          platform.material = this.materials[this.plane.tiles[i][j].type];
         }
       }
     }
